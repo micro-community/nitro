@@ -11,16 +11,16 @@ type Option func(o *Options)
 
 // Options configure runtime
 type Options struct {
-	// Scheduler for updates
-	Scheduler Scheduler
-	// Service type to manage
-	Type string
-	// Source of the services repository
-	Source string
-	// Base image to use
-	Image string
 	// Client to use when making requests
 	Client client.Client
+	// Base image to use
+	Image string
+	// Scheduler for updates
+	Scheduler Scheduler
+	// Source of the services repository
+	Source string
+	// Service type to manage
+	Type string
 }
 
 // WithSource sets the base image / repository
@@ -70,6 +70,8 @@ type CreateOptions struct {
 	Args []string
 	// Environment to configure
 	Env []string
+	// Entrypoint within the folder (e.g. in the case of a mono-repo)
+	Entrypoint string
 	// Log output
 	Output io.Writer
 	// Type of service to create
@@ -86,6 +88,8 @@ type CreateOptions struct {
 	Secrets map[string]string
 	// Resources to allocate the service
 	Resources *Resources
+	// Volumes to mount
+	Volumes map[string]string
 }
 
 // ReadOptions queries runtime services
@@ -127,6 +131,13 @@ func CreateNamespace(ns string) CreateOption {
 func CreateContext(ctx context.Context) CreateOption {
 	return func(o *CreateOptions) {
 		o.Context = ctx
+	}
+}
+
+// CreateEntrypoint sets the entrypoint
+func CreateEntrypoint(e string) CreateOption {
+	return func(o *CreateOptions) {
+		o.Entrypoint = e
 	}
 }
 
@@ -178,6 +189,17 @@ func WithOutput(out io.Writer) CreateOption {
 	}
 }
 
+// WithVolume adds a volume to be mounted
+func WithVolume(name, path string) CreateOption {
+	return func(o *CreateOptions) {
+		if o.Volumes == nil {
+			o.Volumes = map[string]string{name: path}
+		} else {
+			o.Volumes[name] = path
+		}
+	}
+}
+
 // ResourceLimits sets the resources for the service to use
 func ResourceLimits(r *Resources) CreateOption {
 	return func(o *CreateOptions) {
@@ -223,6 +245,8 @@ func ReadContext(ctx context.Context) ReadOption {
 type UpdateOption func(o *UpdateOptions)
 
 type UpdateOptions struct {
+	// Entrypoint within the folder (e.g. in the case of a mono-repo)
+	Entrypoint string
 	// Namespace the service is running in
 	Namespace string
 	// Specify the context to use
@@ -253,6 +277,13 @@ func UpdateNamespace(ns string) UpdateOption {
 func UpdateContext(ctx context.Context) UpdateOption {
 	return func(o *UpdateOptions) {
 		o.Context = ctx
+	}
+}
+
+// UpdateEntrypoint sets the entrypoint
+func UpdateEntrypoint(e string) UpdateOption {
+	return func(o *UpdateOptions) {
+		o.Entrypoint = e
 	}
 }
 
