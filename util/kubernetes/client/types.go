@@ -267,3 +267,16 @@ type VolumeMount struct {
 	Name      string `json:"name"`
 	MountPath string `json:"mountPath"`
 }
+
+// NetworkPolicy defines label-based filtering for network ingress
+type NetworkPolicy struct {
+	AllowedLabels map[string]string `json:"allowedLabels,omitempty"`
+	Metadata      *Metadata         `json:"metadata,omitempty"`
+}
+
+// ResourceQuota defines resource limits for a namespace
+type ResourceQuota struct {
+	Requests *ResourceLimits `json:"requests,omitempty"`
+	Limits   *ResourceLimits `json:"limits,omitempty"`
+	Metadata *Metadata       `json:"metadata,omitempty"`
+}
