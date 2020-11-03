@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/micro/go-micro/v3/client"
-	"github.com/micro/go-micro/v3/errors"
-	"github.com/micro/go-micro/v3/registry"
-	"github.com/micro/go-micro/v3/registry/memory"
-	"github.com/micro/go-micro/v3/router"
-	regRouter "github.com/micro/go-micro/v3/router/registry"
+	"github.com/asim/nitro/v3/client"
+	"github.com/asim/nitro/v3/errors"
+	"github.com/asim/nitro/v3/registry"
+	"github.com/asim/nitro/v3/registry/memory"
+	"github.com/asim/nitro/v3/router"
+	regRouter "github.com/asim/nitro/v3/router/registry"
 )
 
 func newTestRouter() router.Router {

@@ -6,22 +6,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/micro/go-micro/v3/auth"
-	"github.com/micro/go-micro/v3/broker"
-	"github.com/micro/go-micro/v3/broker/http"
-	"github.com/micro/go-micro/v3/codec"
-	"github.com/micro/go-micro/v3/debug/trace"
-	"github.com/micro/go-micro/v3/network/transport"
-	thttp "github.com/micro/go-micro/v3/network/transport/http"
-	"github.com/micro/go-micro/v3/registry"
-	"github.com/micro/go-micro/v3/registry/mdns"
+	"github.com/asim/nitro/v3/auth"
+	"github.com/asim/nitro/v3/broker"
+	mbroker "github.com/asim/nitro/v3/broker/memory"
+	"github.com/asim/nitro/v3/codec"
+	"github.com/asim/nitro/v3/debug/trace"
+	"github.com/asim/nitro/v3/registry"
+	"github.com/asim/nitro/v3/registry/memory"
+	"github.com/asim/nitro/v3/transport"
+	tmem "github.com/asim/nitro/v3/transport/memory"
 )
 
 type Options struct {
 	Codecs       map[string]codec.NewCodec
 	Broker       broker.Broker
 	Registry     registry.Registry
-	Tracer       trace.Tracer
+	Trace        trace.Trace
 	Auth         auth.Auth
 	Transport    transport.Transport
 	Metadata     map[string]string
@@ -65,15 +65,15 @@ func newOptions(opt ...Option) Options {
 	}
 
 	if opts.Broker == nil {
-		opts.Broker = http.NewBroker()
+		opts.Broker = mbroker.NewBroker()
 	}
 
 	if opts.Registry == nil {
-		opts.Registry = mdns.NewRegistry()
+		opts.Registry = memory.NewRegistry()
 	}
 
 	if opts.Transport == nil {
-		opts.Transport = thttp.NewTransport()
+		opts.Transport = tmem.NewTransport()
 	}
 
 	if opts.RegisterCheck == nil {
@@ -171,10 +171,10 @@ func Registry(r registry.Registry) Option {
 	}
 }
 
-// Tracer mechanism for distributed tracking
-func Tracer(t trace.Tracer) Option {
+// Trace mechanism for distributed tracking
+func Trace(t trace.Trace) Option {
 	return func(o *Options) {
-		o.Tracer = t
+		o.Trace = t
 	}
 }
 
@@ -229,7 +229,7 @@ func TLSConfig(t *tls.Config) Option {
 		// set the default transport if one is not
 		// already set. Required for Init call below.
 		if o.Transport == nil {
-			o.Transport = thttp.NewTransport()
+			o.Transport = tmem.NewTransport()
 		}
 
 		// set the transport tls

@@ -3,9 +3,9 @@ package router
 import (
 	"context"
 
+	"github.com/asim/nitro/v3/registry"
+	"github.com/asim/nitro/v3/registry/memory"
 	"github.com/google/uuid"
-	"github.com/micro/go-micro/v3/registry"
-	"github.com/micro/go-micro/v3/registry/mdns"
 )
 
 // Options are router options
@@ -73,7 +73,7 @@ func DefaultOptions() Options {
 	return Options{
 		Id:       uuid.New().String(),
 		Network:  DefaultNetwork,
-		Registry: mdns.NewRegistry(),
+		Registry: memory.NewRegistry(),
 		Context:  context.Background(),
 	}
 }

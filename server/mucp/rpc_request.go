@@ -3,9 +3,9 @@ package mucp
 import (
 	"bytes"
 
-	"github.com/micro/go-micro/v3/codec"
-	"github.com/micro/go-micro/v3/network/transport"
-	"github.com/micro/go-micro/v3/util/buf"
+	"github.com/asim/nitro/v3/codec"
+	"github.com/asim/nitro/v3/transport"
+	"github.com/asim/nitro/v3/util/buf"
 )
 
 type rpcRequest struct {

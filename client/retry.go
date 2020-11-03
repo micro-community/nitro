@@ -2,8 +2,9 @@ package client
 
 import (
 	"context"
+	"net/http"
 
-	"github.com/micro/go-micro/v3/errors"
+	"github.com/asim/nitro/v3/errors"
 )
 
 // note that returning either false or a non-nil error will result in the call not being retried
@@ -27,7 +28,7 @@ func RetryOnError(ctx context.Context, req Request, retryCount int, err error) (
 
 	switch e.Code {
 	// retry on timeout or internal server error
-	case 408, 500:
+	case http.StatusRequestTimeout, http.StatusInternalServerError:
 		return true, nil
 	default:
 		return false, nil

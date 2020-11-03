@@ -6,7 +6,7 @@ import (
 	"io"
 	"sync"
 
-	"github.com/micro/go-micro/v3/codec"
+	"github.com/asim/nitro/v3/codec"
 )
 
 type clientCodec struct {

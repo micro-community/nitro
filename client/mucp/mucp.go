@@ -7,16 +7,16 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/asim/nitro/v3/broker"
+	"github.com/asim/nitro/v3/client"
+	"github.com/asim/nitro/v3/codec"
+	raw "github.com/asim/nitro/v3/codec/bytes"
+	"github.com/asim/nitro/v3/errors"
+	"github.com/asim/nitro/v3/metadata"
+	"github.com/asim/nitro/v3/transport"
+	"github.com/asim/nitro/v3/util/buf"
+	"github.com/asim/nitro/v3/util/pool"
 	"github.com/google/uuid"
-	"github.com/micro/go-micro/v3/broker"
-	"github.com/micro/go-micro/v3/client"
-	"github.com/micro/go-micro/v3/codec"
-	raw "github.com/micro/go-micro/v3/codec/bytes"
-	"github.com/micro/go-micro/v3/errors"
-	"github.com/micro/go-micro/v3/metadata"
-	"github.com/micro/go-micro/v3/network/transport"
-	"github.com/micro/go-micro/v3/util/buf"
-	"github.com/micro/go-micro/v3/util/pool"
 )
 
 type rpcClient struct {

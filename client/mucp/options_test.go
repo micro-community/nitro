@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/micro/go-micro/v3/client"
-	"github.com/micro/go-micro/v3/network/transport"
+	"github.com/asim/nitro/v3/client"
+	"github.com/asim/nitro/v3/transport"
 )
 
 func TestCallOptions(t *testing.T) {

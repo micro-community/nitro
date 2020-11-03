@@ -1,8 +1,8 @@
 package mucp
 
 import (
-	"github.com/micro/go-micro/v3/codec"
-	"github.com/micro/go-micro/v3/network/transport"
+	"github.com/asim/nitro/v3/codec"
+	"github.com/asim/nitro/v3/transport"
 )
 
 type rpcResponse struct {

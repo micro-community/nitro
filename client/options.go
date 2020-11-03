@@ -4,16 +4,16 @@ import (
 	"context"
 	"time"
 
-	"github.com/micro/go-micro/v3/broker"
-	"github.com/micro/go-micro/v3/broker/http"
-	"github.com/micro/go-micro/v3/codec"
-	"github.com/micro/go-micro/v3/network/transport"
-	thttp "github.com/micro/go-micro/v3/network/transport/http"
-	"github.com/micro/go-micro/v3/registry"
-	"github.com/micro/go-micro/v3/router"
-	regRouter "github.com/micro/go-micro/v3/router/registry"
-	"github.com/micro/go-micro/v3/selector"
-	"github.com/micro/go-micro/v3/selector/roundrobin"
+	"github.com/asim/nitro/v3/broker"
+	mbroker "github.com/asim/nitro/v3/broker/memory"
+	"github.com/asim/nitro/v3/codec"
+	"github.com/asim/nitro/v3/registry"
+	"github.com/asim/nitro/v3/router"
+	regRouter "github.com/asim/nitro/v3/router/registry"
+	"github.com/asim/nitro/v3/selector"
+	"github.com/asim/nitro/v3/selector/roundrobin"
+	"github.com/asim/nitro/v3/transport"
+	tmem "github.com/asim/nitro/v3/transport/memory"
 )
 
 type Options struct {
@@ -105,7 +105,7 @@ type RequestOptions struct {
 func NewOptions(options ...Option) Options {
 	opts := Options{
 		Context:     context.Background(),
-		ContentType: "application/protobuf",
+		ContentType: "application/json",
 		Codecs:      make(map[string]codec.NewCodec),
 		CallOptions: CallOptions{
 			Backoff:        DefaultBackoff,
@@ -117,10 +117,10 @@ func NewOptions(options ...Option) Options {
 		Lookup:    LookupRoute,
 		PoolSize:  DefaultPoolSize,
 		PoolTTL:   DefaultPoolTTL,
-		Broker:    http.NewBroker(),
+		Broker:    mbroker.NewBroker(),
 		Router:    regRouter.NewRouter(),
 		Selector:  roundrobin.NewSelector(),
-		Transport: thttp.NewTransport(),
+		Transport: tmem.NewTransport(),
 	}
 
 	for _, o := range options {

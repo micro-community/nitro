@@ -4,15 +4,15 @@ import (
 	"bytes"
 	"sync"
 
-	"github.com/micro/go-micro/v3/codec"
-	raw "github.com/micro/go-micro/v3/codec/bytes"
-	"github.com/micro/go-micro/v3/codec/grpc"
-	"github.com/micro/go-micro/v3/codec/json"
-	"github.com/micro/go-micro/v3/codec/jsonrpc"
-	"github.com/micro/go-micro/v3/codec/proto"
-	"github.com/micro/go-micro/v3/codec/protorpc"
-	"github.com/micro/go-micro/v3/network/transport"
-	"github.com/oxtoacart/bpool"
+	"github.com/asim/nitro/v3/codec"
+	raw "github.com/asim/nitro/v3/codec/bytes"
+	"github.com/asim/nitro/v3/codec/grpc"
+	"github.com/asim/nitro/v3/codec/json"
+	"github.com/asim/nitro/v3/codec/jsonrpc"
+	"github.com/asim/nitro/v3/codec/proto"
+	"github.com/asim/nitro/v3/codec/protorpc"
+	"github.com/asim/nitro/v3/transport"
+	"github.com/asim/nitro/v3/util/buf"
 	"github.com/pkg/errors"
 )
 
@@ -36,7 +36,7 @@ type readWriteCloser struct {
 }
 
 var (
-	DefaultContentType = "application/protobuf"
+	DefaultContentType = "application/json"
 
 	DefaultCodecs = map[string]codec.NewCodec{
 		"application/grpc":         grpc.NewCodec,
@@ -59,7 +59,7 @@ var (
 	}
 
 	// the local buffer pool
-	bufferPool = bpool.NewSizedBufferPool(32, 1)
+	bufferPool = buf.NewPool()
 )
 
 func (rwc *readWriteCloser) Read(p []byte) (n int, err error) {

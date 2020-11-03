@@ -2,15 +2,15 @@
 package memory
 
 import (
+	"errors"
 	"path/filepath"
 	"sort"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/micro/go-micro/v3/store"
+	"github.com/asim/nitro/v3/store"
 	"github.com/patrickmn/go-cache"
-	"github.com/pkg/errors"
 )
 
 // NewStore returns a memory store
