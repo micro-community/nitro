@@ -4,6 +4,8 @@
 
 Nitro (formerly known as Go Micro) is a blazingly fast framework for distributed edge and embeded system app development.
 
+Go to [micro](https://github.com/micro/micro) for Micro. [M3O](https://m3o.com) for a managed version
+
 ## Overview
 
 Nitro provides the core requirements for distributed app development including RPC and Event driven communication. 
@@ -48,6 +50,69 @@ leadership are built in as a Sync interface. When using an eventually consistent
 - **Pluggable Interfaces** - Nitro makes use of Go interfaces for each package. Because of this these interfaces 
 are pluggable and allows Nitro to be runtime agnostic. You can plugin any underlying technology. Find external third party (non stdlib) 
 plugins in [github.com/asim/nitro-plugins](https://github.com/asim/nitro-plugins).
+
+## Usage
+
+Here's how to write a quick Nitro App
+
+```go
+package main
+
+import (
+        "context"
+        "fmt"
+        "time"
+
+        "github.com/asim/nitro/app/rpc"
+)
+
+// Define a request type
+type Request struct {
+        Name string
+}
+
+// Define a response type
+type Response struct {
+        Message string
+}
+
+// Create your public App Handler
+type Handler struct {}
+
+// Create a public Handler method which takes request, response and returns an error
+func (h *Handler) Call(ctx context.Context, req *Request, rsp *Response) error {
+        rsp.Message = "Hello " + req.Name
+        return nil
+}
+
+func main() {
+        // Create a new App
+        app := rpc.NewApp()
+
+        // Set the App name
+        app.Name("helloworld")
+
+        // Register the Handler
+        app.Handle(new(Handler))
+
+        // Run the App (blocking call)
+        app.Run()
+}
+```
+
+To call a Nitro App
+
+```go
+var rsp Response
+
+// Call your app (or any other) by name
+err := app.Call("helloworld", "Handler.Call", &Request{Name: "Alice"}, &rsp)
+if err != nil {
+	fmt.Println(err)
+}
+
+fmt.Println(rsp.Message)
+```
 
 ## License
 

@@ -2,27 +2,26 @@
 package rpc
 
 import (
-	"github.com/asim/nitro/v3/client"
-	crpc "github.com/asim/nitro/v3/client/rpc"
-	"github.com/asim/nitro/v3/server"
-	srpc "github.com/asim/nitro/v3/server/rpc"
+	"context"
+
 	"github.com/asim/nitro/v3/app"
+	mbroker "github.com/asim/nitro/v3/broker/memory"
+	"github.com/asim/nitro/v3/client"
+	rpcClient "github.com/asim/nitro/v3/client/rpc"
+	"github.com/asim/nitro/v3/registry/memory"
+	"github.com/asim/nitro/v3/server"
+	rpcServer "github.com/asim/nitro/v3/server/rpc"
+	tmem "github.com/asim/nitro/v3/transport/memory"
 )
 
 type rpcApp struct {
 	opts app.Options
 }
 
-func newApp(opts ...app.Option) app.App {
-	options := app.NewOptions(opts...)
-
-	return &rpcApp{
-		opts: options,
-	}
-}
-
-func (s *rpcApp) Name() string {
-	return s.opts.Server.Options().Name
+func (s *rpcApp) Name(name string) {
+	s.opts.Server.Init(
+		server.Name(name),
+	)
 }
 
 // Init initialises options. Additionally it calls cmd.Init
@@ -37,6 +36,16 @@ func (s *rpcApp) Init(opts ...app.Option) {
 
 func (s *rpcApp) Options() app.Options {
 	return s.opts
+}
+
+func (s *rpcApp) Call(name, ep string, req, rsp interface{}) error {
+	r := s.Client().NewRequest(name, ep, req)
+	return s.Client().Call(context.Background(), r, rsp)
+}
+
+func (s *rpcApp) Handle(v interface{}) error {
+	h := s.Server().NewHandler(v)
+	return s.Server().Handle(h)
 }
 
 func (s *rpcApp) Client() client.Client {
@@ -106,12 +115,40 @@ func (s *rpcApp) Run() error {
 
 // NewApp returns a new Nitro app
 func NewApp(opts ...app.Option) app.App {
-	options := []app.Option{
-		app.Client(crpc.NewClient()),
-		app.Server(srpc.NewServer()),
+	b := mbroker.NewBroker()
+	c := rpcClient.NewClient()
+	s := rpcServer.NewServer()
+	r := memory.NewRegistry()
+	t := tmem.NewTransport()
+
+	// set client options
+	c.Init(
+		client.Broker(b),
+		client.Registry(r),
+		client.Transport(t),
+	)
+
+	// set server options
+	s.Init(
+		server.Broker(b),
+		server.Registry(r),
+		server.Transport(t),
+	)
+
+	// define local opts
+	options := app.Options{
+		Broker:   b,
+		Client:   c,
+		Server:   s,
+		Registry: r,
+		Context:  context.Background(),
 	}
 
-	options = append(options, opts...)
+	for _, o := range opts {
+		o(&options)
+	}
 
-	return newApp(options...)
+	return &rpcApp{
+		opts: options,
+	}
 }
