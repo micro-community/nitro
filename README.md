@@ -4,7 +4,7 @@
 
 Nitro (formerly known as Go Micro) is a blazingly fast framework for distributed edge and embeded system app development.
 
-Go to [micro](https://github.com/micro/micro) for Micro. [M3O](https://m3o.com) for a managed version
+Go to [Micro](https://github.com/micro/micro) for Micro. Go to [M3O](https://m3o.com) for a managed version (micro as a service)
 
 ## Overview
 
@@ -116,7 +116,7 @@ fmt.Println(rsp.Message)
 
 ## License
 
-[Polyform shield](https://polyformproject.org/licenses/shield/1.0.0/). 
+[Polyform shield](https://polyformproject.org/licenses/shield/1.0.0/). NOTICE: this is a community version ,we grantee nothing.
 
 ## Docs
 
