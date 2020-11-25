@@ -1,5 +1,13 @@
 # FAQ
 
+## What is Nitro?
+
+Nitro is a blazingly fast embeddable Go framework for distributed app development, IoT, edge and p2p.
+
+## How does this relate to AWS Nitro?
+
+It doesn't. We're a more popular, better, faster framework with the same name. 
+
 ## What happened to Go Micro?
 
 Go Micro has now been renamed to Nitro. Go Micro moved back to being a personal project and no longer lives under the organisation github.com/micro. 
@@ -14,10 +22,6 @@ Nitro will now focus on distributed app development using the Go standard librar
 but will only do so without external dependencies. In this manner the hope is Nitro can be picked up with minimal overhead for all sorts of new 
 applications that have a low memory or low resource footprint. The assumption is there are places which would like to use distributed apps just as 
 embedded systems or web assembly, unikernels, and related targets that would benefit from a framework that defined these as primitives for such use.
-
-## How does this relate to AWS Nitro?
-
-It doesn't. We're a more popular, better, faster framework with the same name. 
 
 ## How do Nitro and Micro now differ?
 
