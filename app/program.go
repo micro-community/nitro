@@ -22,8 +22,8 @@ type Program interface {
 	Execute(prog, fn string, req, rsp interface{}) error
 	// Broadcast an event to subscribers
 	Broadcast(event string, msg interface{}) error
-	// Add a function e.g a public Go struct/method with signature func(context.Context, *Request, *Response) error
-	Add(fn interface{}) error
+	// Register a function e.g a public Go struct/method with signature func(context.Context, *Request, *Response) error
+	Register(fn interface{}) error
 	// Subscribe to broadcast events. Signature is public Go func or struct with signature func(context.Context, *Message) error
 	Subscribe(event string, fn interface{}) error
 	// Run the application program
@@ -40,7 +40,7 @@ func (s *nitroProgram) Name(name string) {
 	)
 }
 
-// Init initialises options. Additionally it calls cmd.Init
+// Init initialises options. Registeritionally it calls cmd.Init
 // which parses command line flags. cmd.Init is only called
 // on first Init.
 func (s *nitroProgram) Init(opts ...Option) {
@@ -64,7 +64,7 @@ func (s *nitroProgram) Broadcast(event string, msg interface{}) error {
 	return s.Client().Publish(context.Background(), m)
 }
 
-func (s *nitroProgram) Add(v interface{}) error {
+func (s *nitroProgram) Register(v interface{}) error {
 	h := s.Server().NewHandler(v)
 	return s.Server().Handle(h)
 }
