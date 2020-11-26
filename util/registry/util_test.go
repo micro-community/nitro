@@ -8,11 +8,11 @@ import (
 )
 
 func TestRemove(t *testing.T) {
-	services := []*registry.Service{
+	services := []*registry.App{
 		{
 			Name:    "foo",
 			Version: "1.0.0",
-			Nodes: []*registry.Node{
+			Instances: []*registry.Instance{
 				{
 					Id:      "foo-123",
 					Address: "localhost:9999",
@@ -22,7 +22,7 @@ func TestRemove(t *testing.T) {
 		{
 			Name:    "foo",
 			Version: "1.0.0",
-			Nodes: []*registry.Node{
+			Instances: []*registry.Instance{
 				{
 					Id:      "foo-123",
 					Address: "localhost:6666",
@@ -31,21 +31,21 @@ func TestRemove(t *testing.T) {
 		},
 	}
 
-	servs := Remove([]*registry.Service{services[0]}, []*registry.Service{services[1]})
+	servs := Remove([]*registry.App{services[0]}, []*registry.App{services[1]})
 	if i := len(servs); i > 0 {
 		t.Errorf("Expected 0 nodes, got %d: %+v", i, servs)
 	}
 	if len(os.Getenv("IN_TRAVIS_CI")) == 0 {
-		t.Logf("Services %+v", servs)
+		t.Logf("Apps %+v", servs)
 	}
 }
 
-func TestRemoveNodes(t *testing.T) {
-	services := []*registry.Service{
+func TestRemoveInstances(t *testing.T) {
+	services := []*registry.App{
 		{
 			Name:    "foo",
 			Version: "1.0.0",
-			Nodes: []*registry.Node{
+			Instances: []*registry.Instance{
 				{
 					Id:      "foo-123",
 					Address: "localhost:9999",
@@ -59,7 +59,7 @@ func TestRemoveNodes(t *testing.T) {
 		{
 			Name:    "foo",
 			Version: "1.0.0",
-			Nodes: []*registry.Node{
+			Instances: []*registry.Instance{
 				{
 					Id:      "foo-123",
 					Address: "localhost:6666",
@@ -68,11 +68,11 @@ func TestRemoveNodes(t *testing.T) {
 		},
 	}
 
-	nodes := delNodes(services[0].Nodes, services[1].Nodes)
+	nodes := delInstances(services[0].Instances, services[1].Instances)
 	if i := len(nodes); i != 1 {
 		t.Errorf("Expected only 1 node, got %d: %+v", i, nodes)
 	}
 	if len(os.Getenv("IN_TRAVIS_CI")) == 0 {
-		t.Logf("Nodes %+v", nodes)
+		t.Logf("Instances %+v", nodes)
 	}
 }

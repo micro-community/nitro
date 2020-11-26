@@ -45,7 +45,7 @@ type cache struct {
 	status error
 }
 
-type services map[string][]*registry.Service
+type services map[string][]*registry.App
 type ttls map[string]time.Time
 type watched map[string]bool
 
@@ -71,7 +71,7 @@ func (c *cache) setStatus(err error) {
 }
 
 // isValid checks if the service is valid
-func (c *cache) isValid(services []*registry.Service, ttl time.Time) bool {
+func (c *cache) isValid(services []*registry.App, ttl time.Time) bool {
 	// no services exist
 	if len(services) == 0 {
 		return false
@@ -118,8 +118,8 @@ func (c *cache) del(domain, service string) {
 	}
 }
 
-func (c *cache) get(domain, service string) ([]*registry.Service, error) {
-	var services []*registry.Service
+func (c *cache) get(domain, service string) ([]*registry.App, error) {
+	var services []*registry.App
 	var ttl time.Time
 
 	// lookup the values in the cache before calling the underlying registrry
@@ -138,9 +138,9 @@ func (c *cache) get(domain, service string) ([]*registry.Service, error) {
 	}
 
 	// get does the actual request for a service and cache it
-	get := func(domain string, service string, cached []*registry.Service) ([]*registry.Service, error) {
+	get := func(domain string, service string, cached []*registry.App) ([]*registry.App, error) {
 		// ask the registry
-		services, err := c.Registry.GetService(service, registry.GetDomain(domain))
+		services, err := c.Registry.Get(service, registry.GetDomain(domain))
 		if err != nil {
 			// set the error status
 			c.setStatus(err)
@@ -200,7 +200,7 @@ func (c *cache) get(domain, service string) ([]*registry.Service, error) {
 	return get(domain, service, services)
 }
 
-func (c *cache) set(domain string, service string, srvs []*registry.Service) {
+func (c *cache) set(domain string, service string, srvs []*registry.App) {
 	c.Lock()
 	defer c.Unlock()
 
@@ -216,20 +216,20 @@ func (c *cache) set(domain string, service string, srvs []*registry.Service) {
 }
 
 func (c *cache) update(domain string, res *registry.Result) {
-	if res == nil || res.Service == nil {
+	if res == nil || res.App == nil {
 		return
 	}
 
 	// only save watched services since the service using the cache may only depend on a handful
 	// of other services
 	c.RLock()
-	if _, ok := c.watched[res.Service.Name]; !ok {
+	if _, ok := c.watched[res.App.Name]; !ok {
 		c.RUnlock()
 		return
 	}
 
 	// we're not going to cache anything unless there was already a lookup
-	services, ok := c.services[domain][res.Service.Name]
+	services, ok := c.services[domain][res.App.Name]
 	if !ok {
 		c.RUnlock()
 		return
@@ -237,19 +237,19 @@ func (c *cache) update(domain string, res *registry.Result) {
 
 	c.RUnlock()
 
-	if len(res.Service.Nodes) == 0 {
+	if len(res.App.Instances) == 0 {
 		switch res.Action {
 		case "delete":
-			c.del(domain, res.Service.Name)
+			c.del(domain, res.App.Name)
 		}
 		return
 	}
 
 	// existing service found
-	var service *registry.Service
+	var service *registry.App
 	var index int
 	for i, s := range services {
-		if s.Version == res.Service.Version {
+		if s.Version == res.App.Version {
 			service = s
 			index = i
 		}
@@ -258,37 +258,37 @@ func (c *cache) update(domain string, res *registry.Result) {
 	switch res.Action {
 	case "create", "update":
 		if service == nil {
-			c.set(domain, res.Service.Name, append(services, res.Service))
+			c.set(domain, res.App.Name, append(services, res.App))
 			return
 		}
 
 		// append old nodes to new service
-		for _, cur := range service.Nodes {
+		for _, cur := range service.Instances {
 			var seen bool
-			for _, node := range res.Service.Nodes {
+			for _, node := range res.App.Instances {
 				if cur.Id == node.Id {
 					seen = true
 					break
 				}
 			}
 			if !seen {
-				res.Service.Nodes = append(res.Service.Nodes, cur)
+				res.App.Instances = append(res.App.Instances, cur)
 			}
 		}
 
-		services[index] = res.Service
-		c.set(domain, res.Service.Name, services)
+		services[index] = res.App
+		c.set(domain, res.App.Name, services)
 	case "delete":
 		if service == nil {
 			return
 		}
 
-		var nodes []*registry.Node
+		var nodes []*registry.Instance
 
 		// filter cur nodes to remove the dead one
-		for _, cur := range service.Nodes {
+		for _, cur := range service.Instances {
 			var seen bool
-			for _, del := range res.Service.Nodes {
+			for _, del := range res.App.Instances {
 				if del.Id == cur.Id {
 					seen = true
 					break
@@ -301,7 +301,7 @@ func (c *cache) update(domain string, res *registry.Result) {
 
 		// still got nodes, save and return
 		if len(nodes) > 0 {
-			service.Nodes = nodes
+			service.Instances = nodes
 			services[index] = service
 			c.set(domain, service.Name, services)
 			return
@@ -318,7 +318,7 @@ func (c *cache) update(domain string, res *registry.Result) {
 
 		// still have more than 1 service
 		// check the version and keep what we know
-		var srvs []*registry.Service
+		var srvs []*registry.App
 		for _, s := range services {
 			if s.Version != service.Version {
 				srvs = append(srvs, s)
@@ -360,7 +360,7 @@ func (c *cache) run(domain, service string) {
 		// create new watcher
 		w, err := c.Registry.Watch(
 			registry.WatchDomain(domain),
-			registry.WatchService(service))
+			registry.WatchApp(service))
 		if err != nil {
 			if c.quit() {
 				return
@@ -448,15 +448,15 @@ func (c *cache) watch(domain string, w registry.Watcher) error {
 		// for wildcard queries, the domain will be * and not the services domain, so we'll check to
 		// see if it was provided in the metadata.
 		dom := domain
-		if res.Service.Metadata != nil && len(res.Service.Metadata["domain"]) > 0 {
-			dom = res.Service.Metadata["domain"]
+		if res.App.Metadata != nil && len(res.App.Metadata["domain"]) > 0 {
+			dom = res.App.Metadata["domain"]
 		}
 
 		c.update(dom, res)
 	}
 }
 
-func (c *cache) GetService(service string, opts ...registry.GetOption) ([]*registry.Service, error) {
+func (c *cache) Get(service string, opts ...registry.GetOption) ([]*registry.App, error) {
 	// parse the options, fallback to the default domain
 	var options registry.GetOptions
 	for _, o := range opts {
