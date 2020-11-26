@@ -1,6 +1,6 @@
 # Registry Cache 
 
-Cache is a library that provides a caching layer for the go-micro [registry](https://godoc.org/github.com/asim/nitro/registry#Registry).
+Cache is a library that provides a caching layer for the go-micro [registry](https://godoc.org/github.com/gonitro/nitro/registry#Registry).
 
 If you're looking for caching in your microservices use the [selector](https://micro.mu/docs/fault-tolerance.html#caching-discovery).
 
@@ -19,7 +19,7 @@ type Cache interface {
 ## Usage
 
 ```go
-import "github.com/asim/nitro/registry/cache"
+import "github.com/gonitro/nitro/registry/cache"
 
 # create a new cache
 c := cache.New(registry)

@@ -3,7 +3,7 @@ package pool
 import (
 	"time"
 
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/network"
 )
 
 type Options struct {

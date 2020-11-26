@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asim/nitro/app/event"
-	maddr "github.com/asim/nitro/util/addr"
-	mnet "github.com/asim/nitro/util/net"
-	"github.com/asim/nitro/util/uuid"
+	"github.com/gonitro/nitro/app/event"
+	maddr "github.com/gonitro/nitro/util/addr"
+	mnet "github.com/gonitro/nitro/util/net"
+	"github.com/gonitro/nitro/util/uuid"
 )
 
 type memoryBroker struct {

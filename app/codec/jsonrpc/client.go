@@ -6,7 +6,7 @@ import (
 	"io"
 	"sync"
 
-	"github.com/asim/nitro/app/codec"
+	"github.com/gonitro/nitro/app/codec"
 )
 
 type clientCodec struct {

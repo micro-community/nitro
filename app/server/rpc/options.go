@@ -1,11 +1,11 @@
 package rpc
 
 import (
-	"github.com/asim/nitro/app/codec"
-	mevent "github.com/asim/nitro/app/event/memory"
-	tmem "github.com/asim/nitro/app/network/memory"
-	"github.com/asim/nitro/app/registry/memory"
-	"github.com/asim/nitro/app/server"
+	"github.com/gonitro/nitro/app/codec"
+	mevent "github.com/gonitro/nitro/app/event/memory"
+	tmem "github.com/gonitro/nitro/app/network/memory"
+	"github.com/gonitro/nitro/app/registry/memory"
+	"github.com/gonitro/nitro/app/server"
 )
 
 func newOptions(opt ...server.Option) server.Options {

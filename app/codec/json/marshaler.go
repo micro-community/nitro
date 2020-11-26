@@ -3,7 +3,7 @@ package json
 import (
 	"encoding/json"
 
-	"github.com/asim/nitro/util/buf"
+	"github.com/gonitro/nitro/util/buf"
 )
 
 // create buffer pool with 16 instances each preallocated with 256 bytes

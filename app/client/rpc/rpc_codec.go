@@ -4,13 +4,13 @@ import (
 	"bytes"
 	errs "errors"
 
-	"github.com/asim/nitro/app/codec"
-	raw "github.com/asim/nitro/app/codec/bytes"
-	"github.com/asim/nitro/app/codec/json"
-	"github.com/asim/nitro/app/codec/jsonrpc"
-	"github.com/asim/nitro/app/errors"
-	"github.com/asim/nitro/app/network"
-	"github.com/asim/nitro/app/registry"
+	"github.com/gonitro/nitro/app/codec"
+	raw "github.com/gonitro/nitro/app/codec/bytes"
+	"github.com/gonitro/nitro/app/codec/json"
+	"github.com/gonitro/nitro/app/codec/jsonrpc"
+	"github.com/gonitro/nitro/app/errors"
+	"github.com/gonitro/nitro/app/network"
+	"github.com/gonitro/nitro/app/registry"
 )
 
 const (

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/network"
 )
 
 // testCodec is a dummy codec that only knows how to encode nil bodies

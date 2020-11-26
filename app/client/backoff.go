@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/asim/nitro/util/backoff"
+	"github.com/gonitro/nitro/util/backoff"
 )
 
 type BackoffFunc func(ctx context.Context, req Request, attempts int) (time.Duration, error)

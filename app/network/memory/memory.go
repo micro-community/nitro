@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asim/nitro/app/network"
-	maddr "github.com/asim/nitro/util/addr"
-	mnet "github.com/asim/nitro/util/net"
+	"github.com/gonitro/nitro/app/network"
+	maddr "github.com/gonitro/nitro/util/addr"
+	mnet "github.com/gonitro/nitro/util/net"
 )
 
 type memorySocket struct {

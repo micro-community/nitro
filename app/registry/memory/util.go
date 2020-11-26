@@ -3,7 +3,7 @@ package memory
 import (
 	"time"
 
-	"github.com/asim/nitro/app/registry"
+	"github.com/gonitro/nitro/app/registry"
 )
 
 func serviceToRecord(s *registry.Service, ttl time.Duration) *record {

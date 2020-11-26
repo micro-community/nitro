@@ -3,8 +3,8 @@ package rpc
 import (
 	"net/http"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/network"
 )
 
 type rpcResponse struct {

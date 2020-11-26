@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/network"
 )
 
 func expectedPort(t *testing.T, expected string, lsn network.Listener) {

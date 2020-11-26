@@ -1,7 +1,7 @@
 package registry
 
 import (
-	"github.com/asim/nitro/app/registry"
+	"github.com/gonitro/nitro/app/registry"
 )
 
 func addNodes(old, neu []*registry.Node) []*registry.Node {

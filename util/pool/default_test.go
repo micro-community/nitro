@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/asim/nitro/app/network"
-	"github.com/asim/nitro/app/network/memory"
+	"github.com/gonitro/nitro/app/network"
+	"github.com/gonitro/nitro/app/network/memory"
 )
 
 func testPool(t *testing.T, size int, ttl time.Duration) {

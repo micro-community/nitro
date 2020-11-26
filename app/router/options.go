@@ -3,9 +3,9 @@ package router
 import (
 	"context"
 
-	"github.com/asim/nitro/app/registry"
-	"github.com/asim/nitro/app/registry/memory"
-	"github.com/asim/nitro/util/uuid"
+	"github.com/gonitro/nitro/app/registry"
+	"github.com/gonitro/nitro/app/registry/memory"
+	"github.com/gonitro/nitro/util/uuid"
 )
 
 // Options are router options

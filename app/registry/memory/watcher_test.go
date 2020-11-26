@@ -3,7 +3,7 @@ package memory
 import (
 	"testing"
 
-	"github.com/asim/nitro/app/registry"
+	"github.com/gonitro/nitro/app/registry"
 )
 
 func TestWatcher(t *testing.T) {

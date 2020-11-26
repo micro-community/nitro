@@ -3,8 +3,8 @@ package rpc
 import (
 	"reflect"
 
-	"github.com/asim/nitro/app/registry"
-	"github.com/asim/nitro/app/server"
+	"github.com/gonitro/nitro/app/registry"
+	"github.com/gonitro/nitro/app/server"
 )
 
 type rpcHandler struct {

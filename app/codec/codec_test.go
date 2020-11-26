@@ -4,10 +4,10 @@ import (
 	"io"
 	"testing"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/codec/bytes"
-	"github.com/asim/nitro/app/codec/json"
-	"github.com/asim/nitro/app/codec/jsonrpc"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/codec/bytes"
+	"github.com/gonitro/nitro/app/codec/json"
+	"github.com/gonitro/nitro/app/codec/jsonrpc"
 )
 
 type testRWC struct{}

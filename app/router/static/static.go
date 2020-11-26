@@ -2,12 +2,11 @@
 package static
 
 import (
-	"github.com/asim/nitro/app/router"
+	"github.com/gonitro/nitro/app/router"
 )
 
 var (
-	// DefaulPort is the port to append where nothing is set
-	DefaultPort = 8080
+	DefaultAddress = "unix:///tmp/nitro.sock"
 )
 
 // NewRouter returns an initialized static router
@@ -40,11 +39,18 @@ func (s *static) Table() router.Table {
 
 func (s *static) Lookup(service string, opts ...router.LookupOption) ([]router.Route, error) {
 	options := router.NewLookup(opts...)
+	address := service
+
+	if options.Address == "*" || options.Address == "" {
+		address = DefaultAddress
+	} else if len(options.Address) > 0 {
+		address = options.Address
+	}
 
 	return []router.Route{
 		router.Route{
 			Service: service,
-			Address: service,
+			Address: address,
 			Gateway: options.Gateway,
 			Network: options.Network,
 			Router:  options.Router,

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/asim/nitro/app/registry"
+	"github.com/gonitro/nitro/app/registry"
 )
 
 type testHandler struct{}

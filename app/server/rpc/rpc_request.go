@@ -3,9 +3,9 @@ package rpc
 import (
 	"bytes"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/network"
-	"github.com/asim/nitro/util/buf"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/network"
+	"github.com/gonitro/nitro/util/buf"
 )
 
 type rpcRequest struct {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/asim/nitro/app/event"
+	"github.com/gonitro/nitro/app/event"
 )
 
 func TestMemoryBroker(t *testing.T) {

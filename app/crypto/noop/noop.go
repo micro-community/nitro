@@ -1,8 +1,8 @@
 package noop
 
 import (
-	"github.com/asim/nitro/app/crypto"
-	"github.com/asim/nitro/util/uuid"
+	"github.com/gonitro/nitro/app/crypto"
+	"github.com/gonitro/nitro/util/uuid"
 )
 
 func NewAuth(opts ...crypto.Option) crypto.Auth {

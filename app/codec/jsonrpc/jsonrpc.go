@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/asim/nitro/app/codec"
+	"github.com/gonitro/nitro/app/codec"
 )
 
 type jsonCodec struct {

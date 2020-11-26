@@ -4,14 +4,14 @@ import (
 	"context"
 	"time"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/event"
-	mevent "github.com/asim/nitro/app/event/memory"
-	"github.com/asim/nitro/app/network"
-	tmem "github.com/asim/nitro/app/network/memory"
-	"github.com/asim/nitro/app/registry"
-	"github.com/asim/nitro/app/router"
-	regRouter "github.com/asim/nitro/app/router/registry"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/event"
+	mevent "github.com/gonitro/nitro/app/event/memory"
+	"github.com/gonitro/nitro/app/network"
+	tmem "github.com/gonitro/nitro/app/network/memory"
+	"github.com/gonitro/nitro/app/registry"
+	"github.com/gonitro/nitro/app/router"
+	regRouter "github.com/gonitro/nitro/app/router/registry"
 )
 
 type Options struct {

@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/network"
 )
 
 func TestMemoryTransport(t *testing.T) {

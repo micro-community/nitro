@@ -5,9 +5,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/registry"
-	"github.com/asim/nitro/util/uuid"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/registry"
+	"github.com/gonitro/nitro/util/uuid"
 )
 
 // Server is a simple micro server abstraction
@@ -133,7 +133,7 @@ type Subscriber interface {
 type Option func(*Options)
 
 var (
-	DefaultAddress          = ":0"
+	DefaultAddress          = "unix:///tmp/nitro.sock"
 	DefaultName             = "nitro"
 	DefaultVersion          = "latest"
 	DefaultId               = uuid.New().String()

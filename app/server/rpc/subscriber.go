@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/asim/nitro/app/event"
-	"github.com/asim/nitro/app/network"
-	"github.com/asim/nitro/app/registry"
-	"github.com/asim/nitro/app/server"
+	"github.com/gonitro/nitro/app/event"
+	"github.com/gonitro/nitro/app/network"
+	"github.com/gonitro/nitro/app/registry"
+	"github.com/gonitro/nitro/app/server"
 )
 
 const (

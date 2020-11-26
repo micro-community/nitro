@@ -6,8 +6,8 @@ import (
 	"io"
 	"sync"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/server"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/server"
 )
 
 // Implements the Streamer interface

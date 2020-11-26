@@ -10,11 +10,11 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/asim/nitro/app/logger"
-	"github.com/asim/nitro/app/network"
-	maddr "github.com/asim/nitro/util/addr"
-	mnet "github.com/asim/nitro/util/net"
-	mls "github.com/asim/nitro/util/tls"
+	log "github.com/gonitro/nitro/app/logger"
+	"github.com/gonitro/nitro/app/network"
+	maddr "github.com/gonitro/nitro/util/addr"
+	mnet "github.com/gonitro/nitro/util/net"
+	mls "github.com/gonitro/nitro/util/tls"
 )
 
 type socketTransport struct {

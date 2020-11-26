@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/asim/nitro/app/codec/json"
+	"github.com/gonitro/nitro/app/codec/json"
 )
 
 // jsonStruct implements proto.Message

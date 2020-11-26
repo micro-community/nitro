@@ -4,7 +4,7 @@ package pool
 import (
 	"time"
 
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/network"
 )
 
 // Pool is an interface for connection pooling

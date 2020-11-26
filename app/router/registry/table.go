@@ -4,9 +4,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asim/nitro/app/logger"
-	"github.com/asim/nitro/app/router"
-	"github.com/asim/nitro/util/uuid"
+	"github.com/gonitro/nitro/app/logger"
+	"github.com/gonitro/nitro/app/router"
+	"github.com/gonitro/nitro/util/uuid"
 )
 
 // table is an in-memory routing table

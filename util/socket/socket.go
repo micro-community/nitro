@@ -4,7 +4,7 @@ package socket
 import (
 	"io"
 
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/network"
 )
 
 // Socket is our pseudo socket for network.Socket

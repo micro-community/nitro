@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/asim/nitro/app/codec"
+	"github.com/gonitro/nitro/app/codec"
 )
 
 type Codec struct {

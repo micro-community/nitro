@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asim/nitro/util/uuid"
+	"github.com/gonitro/nitro/util/uuid"
 )
 
 // Buffer is ring buffer

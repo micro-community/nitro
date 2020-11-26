@@ -18,9 +18,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/asim/nitro/app/codec"
-	merrors "github.com/asim/nitro/app/errors"
-	"github.com/asim/nitro/app/server"
+	"github.com/gonitro/nitro/app/codec"
+	merrors "github.com/gonitro/nitro/app/errors"
+	"github.com/gonitro/nitro/app/server"
 )
 
 var (

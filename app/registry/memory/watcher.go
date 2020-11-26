@@ -3,7 +3,7 @@ package memory
 import (
 	"errors"
 
-	"github.com/asim/nitro/app/registry"
+	"github.com/gonitro/nitro/app/registry"
 )
 
 type Watcher struct {

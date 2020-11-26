@@ -6,14 +6,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asim/nitro/app/codec"
-	"github.com/asim/nitro/app/crypto"
-	"github.com/asim/nitro/app/event"
-	mevent "github.com/asim/nitro/app/event/memory"
-	"github.com/asim/nitro/app/network"
-	tmem "github.com/asim/nitro/app/network/memory"
-	"github.com/asim/nitro/app/registry"
-	"github.com/asim/nitro/app/registry/memory"
+	"github.com/gonitro/nitro/app/codec"
+	"github.com/gonitro/nitro/app/crypto"
+	"github.com/gonitro/nitro/app/event"
+	mevent "github.com/gonitro/nitro/app/event/memory"
+	"github.com/gonitro/nitro/app/network"
+	tmem "github.com/gonitro/nitro/app/network/memory"
+	"github.com/gonitro/nitro/app/registry"
+	"github.com/gonitro/nitro/app/registry/memory"
 )
 
 type Options struct {

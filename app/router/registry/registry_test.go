@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/asim/nitro/app/registry/memory"
-	"github.com/asim/nitro/app/router"
+	"github.com/gonitro/nitro/app/registry/memory"
+	"github.com/gonitro/nitro/app/router"
 )
 
 func routerTestSetup() router.Router {

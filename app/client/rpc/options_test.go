@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/asim/nitro/app/client"
-	"github.com/asim/nitro/app/network"
+	"github.com/gonitro/nitro/app/client"
+	"github.com/gonitro/nitro/app/network"
 )
 
 func TestCallOptions(t *testing.T) {

@@ -2,7 +2,7 @@
 package rpc
 
 import (
-	"github.com/asim/nitro/app/server"
+	"github.com/gonitro/nitro/app/server"
 )
 
 var (

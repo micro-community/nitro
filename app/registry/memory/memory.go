@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asim/nitro/app/logger"
-	"github.com/asim/nitro/app/registry"
-	"github.com/asim/nitro/util/uuid"
+	"github.com/gonitro/nitro/app/logger"
+	"github.com/gonitro/nitro/app/registry"
+	"github.com/gonitro/nitro/util/uuid"
 )
 
 var (
