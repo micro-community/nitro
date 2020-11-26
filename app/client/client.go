@@ -32,7 +32,7 @@ type Message interface {
 // Request is the interface for a synchronous request used by Call or Stream
 type Request interface {
 	// The service to call
-	Service() string
+	App() string
 	// The action to take
 	Method() string
 	// The endpoint to invoke

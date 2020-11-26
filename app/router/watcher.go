@@ -65,14 +65,14 @@ type WatchOption func(*WatchOptions)
 // WatchOptions are table watcher options
 // TODO: expand the options to watch based on other criteria
 type WatchOptions struct {
-	// Service allows to watch specific service routes
-	Service string
+	// App allows to watch specific service routes
+	App string
 }
 
-// WatchService sets what service routes to watch
-// Service is the microservice name
-func WatchService(s string) WatchOption {
+// WatchApp sets what service routes to watch
+// App is the microservice name
+func WatchApp(s string) WatchOption {
 	return func(o *WatchOptions) {
-		o.Service = s
+		o.App = s
 	}
 }

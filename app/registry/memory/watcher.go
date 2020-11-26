@@ -17,18 +17,18 @@ func (m *Watcher) Next() (*registry.Result, error) {
 	for {
 		select {
 		case r := <-m.res:
-			if r.Service == nil {
+			if r.App == nil {
 				continue
 			}
 
-			if len(m.wo.Service) > 0 && m.wo.Service != r.Service.Name {
+			if len(m.wo.App) > 0 && m.wo.App != r.App.Name {
 				continue
 			}
 
 			// extract domain from service metadata
 			var domain string
-			if r.Service.Metadata != nil && len(r.Service.Metadata["domain"]) > 0 {
-				domain = r.Service.Metadata["domain"]
+			if r.App.Metadata != nil && len(r.App.Metadata["domain"]) > 0 {
+				domain = r.App.Metadata["domain"]
 			} else {
 				domain = registry.DefaultDomain
 			}

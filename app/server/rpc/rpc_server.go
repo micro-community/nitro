@@ -43,7 +43,7 @@ type rpcServer struct {
 	// graceful exit
 	wg *sync.WaitGroup
 
-	rsvc *registry.Service
+	rsvc *registry.App
 }
 
 var (
@@ -110,7 +110,7 @@ func (s *rpcServer) HandleEvent(msg *event.Message) error {
 	ctx := metadata.NewContext(context.Background(), hdr)
 
 	// TODO: inspect message header
-	// Service means a request
+	// App means a request
 	// Event means a message
 
 	rpcMsg := &rpcMessage{
@@ -184,7 +184,7 @@ func (s *rpcServer) ServeConn(sock network.Socket) {
 		}
 
 		// check the message header for
-		// Service is a request
+		// App is a request
 		// Event is a message
 		if t := msg.Header["Event"]; len(t) > 0 {
 			// TODO: handle the error event
@@ -325,7 +325,7 @@ func (s *rpcServer) ServeConn(sock network.Socket) {
 
 		// internal request
 		request := &rpcRequest{
-			service:     getHeader("Service", msg.Header),
+			service:     getHeader("App", msg.Header),
 			method:      getHeader("Method", msg.Header),
 			endpoint:    getHeader("Endpoint", msg.Header),
 			contentType: ct,
@@ -511,7 +511,7 @@ func (s *rpcServer) Subscribe(sb server.Subscriber) error {
 	return nil
 }
 
-func (s *rpcServer) Register() error {
+func (s *rpcServer) Add() error {
 	s.RLock()
 	rsvc := s.rsvc
 	config := s.Options()
@@ -522,18 +522,18 @@ func (s *rpcServer) Register() error {
 		return nil
 	}
 
-	regFunc := func(service *registry.Service) error {
+	regFunc := func(service *registry.App) error {
 		// create registry options
-		rOpts := []registry.RegisterOption{
-			registry.RegisterTTL(config.RegisterTTL),
-			registry.RegisterDomain(s.opts.Namespace),
+		rOpts := []registry.AddOption{
+			registry.AddTTL(config.AddTTL),
+			registry.AddDomain(s.opts.Namespace),
 		}
 
 		var regErr error
 
 		for i := 0; i < 3; i++ {
 			// attempt to register
-			if err := config.Registry.Register(service, rOpts...); err != nil {
+			if err := config.Registry.Add(service, rOpts...); err != nil {
 				// set the error
 				regErr = err
 				// backoff then retry
@@ -558,7 +558,7 @@ func (s *rpcServer) Register() error {
 
 	var err error
 	var advt, host, port string
-	var cacheService bool
+	var cacheApp bool
 
 	// check the advertise address first
 	// if it exists then use it, otherwise
@@ -580,7 +580,7 @@ func (s *rpcServer) Register() error {
 	}
 
 	if ip := net.ParseIP(host); ip != nil {
-		cacheService = true
+		cacheApp = true
 	}
 
 	addr, err := addr.Extract(host)
@@ -597,7 +597,7 @@ func (s *rpcServer) Register() error {
 	}
 
 	// register service
-	node := &registry.Node{
+	node := &registry.Instance{
 		Id:       config.Name + "-" + config.Id,
 		Address:  addr,
 		Metadata: md,
@@ -644,10 +644,10 @@ func (s *rpcServer) Register() error {
 		endpoints = append(endpoints, e.Endpoints()...)
 	}
 
-	service := &registry.Service{
+	service := &registry.App{
 		Name:      config.Name,
 		Version:   config.Version,
-		Nodes:     []*registry.Node{node},
+		Instances: []*registry.Instance{node},
 		Endpoints: endpoints,
 	}
 
@@ -658,7 +658,7 @@ func (s *rpcServer) Register() error {
 
 	if !registered {
 		if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-			log.Infof("Registry [%s] Registering node: %s", config.Registry.String(), node.Id)
+			log.Infof("Registry [%s] Adding node: %s", config.Registry.String(), node.Id)
 		}
 	}
 
@@ -710,7 +710,7 @@ func (s *rpcServer) Register() error {
 		}
 		s.subscribers[sb] = []event.Subscriber{sub}
 	}
-	if cacheService {
+	if cacheApp {
 		s.rsvc = service
 	}
 	s.registered = true
@@ -718,7 +718,7 @@ func (s *rpcServer) Register() error {
 	return nil
 }
 
-func (s *rpcServer) Deregister() error {
+func (s *rpcServer) Remove() error {
 	var err error
 	var advt, host, port string
 
@@ -760,21 +760,21 @@ func (s *rpcServer) Deregister() error {
 		addr = mnet.HostPort(addr, port)
 	}
 
-	node := &registry.Node{
+	node := &registry.Instance{
 		Id:      config.Name + "-" + config.Id,
 		Address: addr,
 	}
 
-	service := &registry.Service{
-		Name:    config.Name,
-		Version: config.Version,
-		Nodes:   []*registry.Node{node},
+	service := &registry.App{
+		Name:      config.Name,
+		Version:   config.Version,
+		Instances: []*registry.Instance{node},
 	}
 
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-		log.Infof("Registry [%s] Deregistering node: %s", config.Registry.String(), node.Id)
+		log.Infof("Registry [%s] Removeing node: %s", config.Registry.String(), node.Id)
 	}
-	if err := config.Registry.Deregister(service, registry.DeregisterDomain(s.opts.Namespace)); err != nil {
+	if err := config.Registry.Remove(service, registry.RemoveDomain(s.opts.Namespace)); err != nil {
 		return err
 	}
 
@@ -848,14 +848,14 @@ func (s *rpcServer) Start() error {
 		log.Infof("Broker [%s] Connected to %s", bname, config.Broker.Address())
 	}
 
-	// use RegisterCheck func before register
-	if err = s.opts.RegisterCheck(s.opts.Context); err != nil {
+	// use AddCheck func before register
+	if err = s.opts.AddCheck(s.opts.Context); err != nil {
 		if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 			log.Errorf("Server %s-%s register check error: %s", config.Name, config.Id, err)
 		}
 	} else {
 		// announce self to the world
-		if err = s.Register(); err != nil {
+		if err = s.Add(); err != nil {
 			if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 				log.Errorf("Server %s-%s register error: %s", config.Name, config.Id, err)
 			}
@@ -896,9 +896,9 @@ func (s *rpcServer) Start() error {
 		t := new(time.Ticker)
 
 		// only process if it exists
-		if s.opts.RegisterInterval > time.Duration(0) {
+		if s.opts.AddInterval > time.Duration(0) {
 			// new ticker
-			t = time.NewTicker(s.opts.RegisterInterval)
+			t = time.NewTicker(s.opts.AddInterval)
 		}
 
 		// return error chan
@@ -912,13 +912,13 @@ func (s *rpcServer) Start() error {
 				s.RLock()
 				registered := s.registered
 				s.RUnlock()
-				rerr := s.opts.RegisterCheck(s.opts.Context)
+				rerr := s.opts.AddCheck(s.opts.Context)
 				if rerr != nil && registered {
 					if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 						log.Errorf("Server %s-%s register check error: %s, deregister it", config.Name, config.Id, rerr)
 					}
 					// deregister self in case of error
-					if err := s.Deregister(); err != nil {
+					if err := s.Remove(); err != nil {
 						if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 							log.Errorf("Server %s-%s deregister error: %s", config.Name, config.Id, err)
 						}
@@ -929,7 +929,7 @@ func (s *rpcServer) Start() error {
 					}
 					continue
 				}
-				if err := s.Register(); err != nil {
+				if err := s.Add(); err != nil {
 					if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 						log.Errorf("Server %s-%s register error: %s", config.Name, config.Id, err)
 					}
@@ -947,7 +947,7 @@ func (s *rpcServer) Start() error {
 		s.RUnlock()
 		if registered {
 			// deregister self
-			if err := s.Deregister(); err != nil {
+			if err := s.Remove(); err != nil {
 				if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 					log.Errorf("Server %s-%s deregister error: %s", config.Name, config.Id, err)
 				}

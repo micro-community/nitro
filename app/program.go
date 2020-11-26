@@ -40,7 +40,7 @@ func (s *nitroProgram) Name(name string) {
 	)
 }
 
-// Init initialises options. Additionally it calls cmd.Init
+// Init initialises options. Registeritionally it calls cmd.Init
 // which parses command line flags. cmd.Init is only called
 // on first Init.
 func (s *nitroProgram) Init(opts ...Option) {

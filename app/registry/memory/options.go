@@ -8,15 +8,15 @@ import (
 
 type servicesKey struct{}
 
-func getServiceRecords(ctx context.Context) map[string]map[string]*record {
-	memServices, ok := ctx.Value(servicesKey{}).(map[string][]*registry.Service)
+func getAppRecords(ctx context.Context) map[string]map[string]*record {
+	memApps, ok := ctx.Value(servicesKey{}).(map[string][]*registry.App)
 	if !ok {
 		return nil
 	}
 
 	services := make(map[string]map[string]*record)
 
-	for name, svc := range memServices {
+	for name, svc := range memApps {
 		if _, ok := services[name]; !ok {
 			services[name] = make(map[string]*record)
 		}
@@ -29,8 +29,8 @@ func getServiceRecords(ctx context.Context) map[string]map[string]*record {
 	return services
 }
 
-// Services is an option that preloads service data
-func Services(s map[string][]*registry.Service) registry.Option {
+// Apps is an option that preloads service data
+func Apps(s map[string][]*registry.App) registry.Option {
 	return func(o *registry.Options) {
 		if o.Context == nil {
 			o.Context = context.Background()

@@ -89,7 +89,7 @@ type Resource struct {
 	Name string `json:"name"`
 	// Type of resource, e.g. service
 	Type string `json:"type"`
-	// Endpoint resource e.g NotesService.Create
+	// Endpoint resource e.g NotesApp.Create
 	Endpoint string `json:"endpoint"`
 }
 

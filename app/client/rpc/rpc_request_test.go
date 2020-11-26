@@ -8,8 +8,8 @@ import (
 
 func TestRequestOptions(t *testing.T) {
 	r := newRequest("service", "endpoint", nil, "application/json")
-	if r.Service() != "service" {
-		t.Fatalf("expected 'service' got %s", r.Service())
+	if r.App() != "service" {
+		t.Fatalf("expected 'service' got %s", r.App())
 	}
 	if r.Endpoint() != "endpoint" {
 		t.Fatalf("expected 'endpoint' got %s", r.Endpoint())

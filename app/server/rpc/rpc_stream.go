@@ -34,7 +34,7 @@ func (r *rpcStream) Send(msg interface{}) error {
 	defer r.Unlock()
 
 	resp := codec.Message{
-		Target:   r.request.Service(),
+		Target:   r.request.App(),
 		Method:   r.request.Method(),
 		Endpoint: r.request.Endpoint(),
 		Id:       r.id,

@@ -59,7 +59,7 @@ func (d *dns) Lookup(service string, opts ...router.LookupOption) ([]router.Rout
 		result := make([]router.Route, len(ips))
 		for i, ip := range ips {
 			result[i] = router.Route{
-				Service: service,
+				App:     service,
 				Address: fmt.Sprintf("%s:%d", ip, uint16(p)),
 			}
 		}
@@ -77,7 +77,7 @@ func (d *dns) Lookup(service string, opts ...router.LookupOption) ([]router.Rout
 	result := make([]router.Route, len(nodes))
 	for i, n := range nodes {
 		result[i] = router.Route{
-			Service: service,
+			App:     service,
 			Address: fmt.Sprintf("%s:%d", n.Target, n.Port),
 			Network: d.options.Network,
 		}

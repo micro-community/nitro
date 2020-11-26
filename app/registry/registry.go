@@ -9,11 +9,11 @@ const (
 	// WildcardDomain indicates any domain
 	WildcardDomain = "*"
 	// DefaultDomain to use if none was provided in options
-	DefaultDomain = "micro"
+	DefaultDomain = "nitro"
 )
 
 var (
-	// Not found error when GetService is called
+	// Not found error when GetApp is called
 	ErrNotFound = errors.New("service not found")
 	// Watcher stopped error when watcher is stopped
 	ErrWatcherStopped = errors.New("watcher stopped")
@@ -25,23 +25,23 @@ var (
 type Registry interface {
 	Init(...Option) error
 	Options() Options
-	Register(*Service, ...RegisterOption) error
-	Deregister(*Service, ...DeregisterOption) error
-	GetService(string, ...GetOption) ([]*Service, error)
-	ListServices(...ListOption) ([]*Service, error)
+	Add(*App, ...AddOption) error
+	Remove(*App, ...RemoveOption) error
+	Get(string, ...GetOption) ([]*App, error)
+	List(...ListOption) ([]*App, error)
 	Watch(...WatchOption) (Watcher, error)
 	String() string
 }
 
-type Service struct {
+type App struct {
 	Name      string            `json:"name"`
 	Version   string            `json:"version"`
 	Metadata  map[string]string `json:"metadata"`
 	Endpoints []*Endpoint       `json:"endpoints"`
-	Nodes     []*Node           `json:"nodes"`
+	Instances []*Instance       `json:"instances"`
 }
 
-type Node struct {
+type Instance struct {
 	Id       string            `json:"id"`
 	Address  string            `json:"address"`
 	Metadata map[string]string `json:"metadata"`
@@ -62,11 +62,11 @@ type Value struct {
 
 type Option func(*Options)
 
-type RegisterOption func(*RegisterOptions)
+type AddOption func(*AddOptions)
 
 type WatchOption func(*WatchOptions)
 
-type DeregisterOption func(*DeregisterOptions)
+type RemoveOption func(*RemoveOptions)
 
 type GetOption func(*GetOptions)
 

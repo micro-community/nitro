@@ -41,7 +41,7 @@ func (r *rpcRequest) ContentType() string {
 	return r.contentType
 }
 
-func (r *rpcRequest) Service() string {
+func (r *rpcRequest) App() string {
 	return r.service
 }
 

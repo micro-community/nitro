@@ -4,7 +4,7 @@ import "testing"
 
 func TestHash(t *testing.T) {
 	route1 := Route{
-		Service: "dest.svc",
+		App:     "dest.svc",
 		Gateway: "dest.gw",
 		Network: "dest.network",
 		Link:    "det.link",

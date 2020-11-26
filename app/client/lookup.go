@@ -28,11 +28,11 @@ func LookupRoute(ctx context.Context, req Request, opts CallOptions) ([]string, 
 	}
 
 	// lookup the routes which can be used to execute the request
-	routes, err := opts.Router.Lookup(req.Service(), query...)
+	routes, err := opts.Router.Lookup(req.App(), query...)
 	if err == router.ErrRouteNotFound {
-		return nil, errors.InternalServerError("nitro", "service %s: %s", req.Service(), err.Error())
+		return nil, errors.InternalServerError("nitro", "service %s: %s", req.App(), err.Error())
 	} else if err != nil {
-		return nil, errors.InternalServerError("nitro", "error getting next %s node: %s", req.Service(), err.Error())
+		return nil, errors.InternalServerError("nitro", "error getting next %s node: %s", req.App(), err.Error())
 	}
 
 	// sort by lowest metric first

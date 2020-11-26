@@ -86,7 +86,7 @@ func getHeaders(m *codec.Message) {
 	m.Error = set(m.Error, "Error")
 	m.Endpoint = set(m.Endpoint, "Endpoint")
 	m.Method = set(m.Method, "Method")
-	m.Target = set(m.Target, "Service")
+	m.Target = set(m.Target, "App")
 
 	// TODO: remove this cruft
 	if len(m.Endpoint) == 0 {
@@ -105,7 +105,7 @@ func setHeaders(m, r *codec.Message) {
 
 	// set headers
 	set("Id", r.Id)
-	set("Service", r.Target)
+	set("App", r.Target)
 	set("Method", r.Method)
 	set("Endpoint", r.Endpoint)
 	set("Error", r.Error)
@@ -113,7 +113,7 @@ func setHeaders(m, r *codec.Message) {
 
 // setupProtocol sets up the old protocol
 func setupProtocol(msg *network.Message) codec.NewCodec {
-	service := getHeader("Service", msg.Header)
+	service := getHeader("App", msg.Header)
 	method := getHeader("Method", msg.Header)
 	endpoint := getHeader("Endpoint", msg.Header)
 	protocol := getHeader("Protocol", msg.Header)

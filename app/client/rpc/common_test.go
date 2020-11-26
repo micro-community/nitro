@@ -6,12 +6,12 @@ import (
 
 var (
 	// mock data
-	testData = map[string][]*registry.Service{
+	testData = map[string][]*registry.App{
 		"foo": {
 			{
 				Name:    "foo",
 				Version: "1.0.0",
-				Nodes: []*registry.Node{
+				Instances: []*registry.Instance{
 					{
 						Id:      "foo-1.0.0-123",
 						Address: "localhost:9999",
@@ -31,7 +31,7 @@ var (
 			{
 				Name:    "foo",
 				Version: "1.0.1",
-				Nodes: []*registry.Node{
+				Instances: []*registry.Instance{
 					{
 						Id:      "foo-1.0.1-321",
 						Address: "localhost:6666",
@@ -44,7 +44,7 @@ var (
 			{
 				Name:    "foo",
 				Version: "1.0.3",
-				Nodes: []*registry.Node{
+				Instances: []*registry.Instance{
 					{
 						Id:      "foo-1.0.3-345",
 						Address: "localhost:8888",

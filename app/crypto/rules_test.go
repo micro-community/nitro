@@ -81,7 +81,7 @@ func TestVerify(t *testing.T) {
 			Error: ErrForbidden,
 		},
 		{
-			Name:     "CatchallServiceRuleMatch",
+			Name:     "CatchallAppRuleMatch",
 			Resource: srvResource,
 			Account:  &Account{},
 			Rules: []*Rule{
@@ -96,7 +96,7 @@ func TestVerify(t *testing.T) {
 			},
 		},
 		{
-			Name:     "CatchallServiceRuleNoMatch",
+			Name:     "CatchallAppRuleNoMatch",
 			Resource: srvResource,
 			Account:  &Account{},
 			Rules: []*Rule{
