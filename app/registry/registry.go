@@ -25,11 +25,11 @@ var (
 type Registry interface {
 	Init(...Option) error
 	Options() Options
+	Add(*App, ...AddOption) error
+	Remove(*App, ...RemoveOption) error
 	Get(string, ...GetOption) ([]*App, error)
 	List(...ListOption) ([]*App, error)
 	Watch(...WatchOption) (Watcher, error)
-	Add(*App, ...AddOption) error
-	Remove(*App, ...RemoveOption) error
 	String() string
 }
 
