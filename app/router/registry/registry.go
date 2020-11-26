@@ -88,13 +88,13 @@ func (r *rtr) Table() router.Table {
 	return r.table
 }
 
-func getDomain(srv *registry.Service) string {
+func getDomain(srv *registry.App) string {
 	// check the service metadata for domain
 	// TODO: domain as Domain field in registry?
 	if srv.Metadata != nil && len(srv.Metadata["domain"]) > 0 {
 		return srv.Metadata["domain"]
-	} else if len(srv.Nodes) > 0 && srv.Nodes[0].Metadata != nil {
-		return srv.Nodes[0].Metadata["domain"]
+	} else if len(srv.Instances) > 0 && srv.Instances[0].Metadata != nil {
+		return srv.Instances[0].Metadata["domain"]
 	}
 
 	// otherwise return wildcard
@@ -107,30 +107,30 @@ func (r *rtr) manageRoute(route router.Route, action string) error {
 	switch action {
 	case "create":
 		if err := r.table.Create(route); err != nil && err != router.ErrDuplicateRoute {
-			return fmt.Errorf("failed adding route for service %s: %s", route.Service, err)
+			return fmt.Errorf("failed adding route for service %s: %s", route.App, err)
 		}
 	case "delete":
 		if err := r.table.Delete(route); err != nil && err != router.ErrRouteNotFound {
-			return fmt.Errorf("failed deleting route for service %s: %s", route.Service, err)
+			return fmt.Errorf("failed deleting route for service %s: %s", route.App, err)
 		}
 	case "update":
 		if err := r.table.Update(route); err != nil {
-			return fmt.Errorf("failed updating route for service %s: %s", route.Service, err)
+			return fmt.Errorf("failed updating route for service %s: %s", route.App, err)
 		}
 	default:
-		return fmt.Errorf("failed to manage route for service %s: unknown action %s", route.Service, action)
+		return fmt.Errorf("failed to manage route for service %s: unknown action %s", route.App, action)
 	}
 
 	return nil
 }
 
 // createRoutes turns a service into a list routes basically converting nodes to routes
-func (r *rtr) createRoutes(service *registry.Service, network string) []router.Route {
+func (r *rtr) createRoutes(service *registry.App, network string) []router.Route {
 	var routes []router.Route
 
-	for _, node := range service.Nodes {
+	for _, node := range service.Instances {
 		routes = append(routes, router.Route{
-			Service:  service.Name,
+			App:  service.Name,
 			Address:  node.Address,
 			Gateway:  "",
 			Network:  network,
@@ -144,9 +144,9 @@ func (r *rtr) createRoutes(service *registry.Service, network string) []router.R
 	return routes
 }
 
-// manageServiceRoutes applies action to all routes of the service.
+// manageAppRoutes applies action to all routes of the service.
 // It returns error of the action fails with error.
-func (r *rtr) manageRoutes(service *registry.Service, action, network string) error {
+func (r *rtr) manageRoutes(service *registry.App, action, network string) error {
 	// action is the routing table action
 	action = strings.ToLower(action)
 
@@ -158,7 +158,7 @@ func (r *rtr) manageRoutes(service *registry.Service, action, network string) er
 	// for that service
 	if action == "delete" && len(routes) == 0 {
 		// delete the service entirely
-		r.table.deleteService(service.Name, network)
+		r.table.deleteApp(service.Name, network)
 		return nil
 	}
 
@@ -176,7 +176,7 @@ func (r *rtr) manageRoutes(service *registry.Service, action, network string) er
 // manageRegistryRoutes applies action to all routes of each service found in the registry.
 // It returns error if either the services failed to be listed or the routing table action fails.
 func (r *rtr) loadRoutes(reg registry.Registry) error {
-	services, err := reg.ListServices(registry.ListDomain(registry.WildcardDomain))
+	services, err := reg.List(registry.ListDomain(registry.WildcardDomain))
 	if err != nil {
 		return fmt.Errorf("failed listing services: %v", err)
 	}
@@ -210,7 +210,7 @@ func (r *rtr) loadRoutes(reg registry.Registry) error {
 		// otherwise get all the service info
 
 		// get the service to retrieve all its info
-		srvs, err := reg.GetService(service.Name, registry.GetDomain(domain))
+		srvs, err := reg.Get(service.Name, registry.GetDomain(domain))
 		if err != nil {
 			logger.Tracef("Failed to get service %s domain: %s", service.Name, domain)
 			continue
@@ -266,7 +266,7 @@ func (r *rtr) Lookup(service string, opts ...router.LookupOption) ([]router.Rout
 	q := router.NewLookup(opts...)
 
 	// if we find the routes filter and return them
-	routes, err := r.table.Read(router.ReadService(service))
+	routes, err := r.table.Read(router.ReadApp(service))
 	if err == nil {
 		routes = router.Filter(routes, q)
 		if len(routes) == 0 {
@@ -278,7 +278,7 @@ func (r *rtr) Lookup(service string, opts ...router.LookupOption) ([]router.Rout
 	// lookup the route
 	logger.Tracef("Fetching route for %s domain: %v", service, registry.WildcardDomain)
 
-	services, err := r.options.Registry.GetService(service, registry.GetDomain(registry.WildcardDomain))
+	services, err := r.options.Registry.Get(service, registry.GetDomain(registry.WildcardDomain))
 	if err == registry.ErrNotFound {
 		logger.Tracef("Failed to find route for %s", service)
 		return nil, router.ErrRouteNotFound
@@ -341,18 +341,18 @@ func (r *rtr) watchRegistry(w registry.Watcher) error {
 		}
 
 		// don't process nil entries
-		if res.Service == nil {
+		if res.App == nil {
 			logger.Trace("Received a nil service")
 			continue
 		}
 
-		logger.Tracef("Router dealing with next route %s %+v\n", res.Action, res.Service)
+		logger.Tracef("Router dealing with next route %s %+v\n", res.Action, res.App)
 
 		// get the services domain from metadata. Fallback to wildcard.
-		domain := getDomain(res.Service)
+		domain := getDomain(res.App)
 
 		// create/update or delete the route
-		if err := r.manageRoutes(res.Service, res.Action, domain); err != nil {
+		if err := r.manageRoutes(res.App, res.Action, domain); err != nil {
 			return err
 		}
 	}
@@ -370,7 +370,7 @@ func (r *rtr) start() error {
 	if r.options.Gateway != "" {
 		// note, the only non-default value is the gateway
 		route := router.Route{
-			Service: "*",
+			App: "*",
 			Address: "*",
 			Gateway: r.options.Gateway,
 			Network: "*",

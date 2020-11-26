@@ -10,7 +10,7 @@ func testSetup() (*table, router.Route) {
 	table := newTable()
 
 	route := router.Route{
-		Service: "dest.svc",
+		App: "dest.svc",
 		Address: "dest.addr",
 		Gateway: "dest.gw",
 		Network: "dest.network",
@@ -50,15 +50,15 @@ func TestDelete(t *testing.T) {
 	}
 
 	// should fail to delete non-existant route
-	prevSvc := route.Service
-	route.Service = "randDest"
+	prevSvc := route.App
+	route.App = "randDest"
 
 	if err := table.Delete(route); err != router.ErrRouteNotFound {
 		t.Fatalf("error deleting route. Expected: %s, found: %s", router.ErrRouteNotFound, err)
 	}
 
 	// we should be able to delete the existing route
-	route.Service = prevSvc
+	route.App = prevSvc
 
 	if err := table.Delete(route); err != nil {
 		t.Fatalf("error deleting route: %s", err)
@@ -80,7 +80,7 @@ func TestUpdate(t *testing.T) {
 	}
 
 	// this should add a new route
-	route.Service = "rand.dest"
+	route.App = "rand.dest"
 
 	if err := table.Update(route); err != nil {
 		t.Fatalf("error updating route: %s", err)
@@ -93,7 +93,7 @@ func TestList(t *testing.T) {
 	svc := []string{"one.svc", "two.svc", "three.svc"}
 
 	for i := 0; i < len(svc); i++ {
-		route.Service = svc[i]
+		route.App = svc[i]
 		if err := table.Create(route); err != nil {
 			t.Fatalf("error adding route: %s", err)
 		}
@@ -116,7 +116,7 @@ func TestQuery(t *testing.T) {
 		t.Fatalf("error adding route: %s", err)
 	}
 
-	rt, err := table.Read(router.ReadService(route.Service))
+	rt, err := table.Read(router.ReadApp(route.App))
 	if err != nil {
 		t.Fatal("Expected a route got err", err)
 	}

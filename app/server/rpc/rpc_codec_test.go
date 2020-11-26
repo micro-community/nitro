@@ -48,7 +48,7 @@ func TestCodecWriteError(t *testing.T) {
 	}
 
 	err := c.Write(&codec.Message{
-		Endpoint: "Service.Endpoint",
+		Endpoint: "App.Endpoint",
 		Id:       "0",
 		Error:    "",
 	}, "body")

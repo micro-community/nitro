@@ -18,7 +18,7 @@ func TestWatcher(t *testing.T) {
 
 	go func() {
 		w.res <- &registry.Result{
-			Service: &registry.Service{Name: "foo"},
+			App: &registry.App{Name: "foo"},
 		}
 	}()
 

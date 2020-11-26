@@ -14,7 +14,7 @@ import (
 )
 
 func newTestRouter() router.Router {
-	reg := memory.NewRegistry(memory.Services(testData))
+	reg := memory.NewRegistry(memory.Apps(testData))
 	return regRouter.NewRouter(router.Registry(reg))
 }
 
@@ -28,8 +28,8 @@ func TestCallAddress(t *testing.T) {
 		return func(ctx context.Context, node string, req client.Request, rsp interface{}, opts client.CallOptions) error {
 			called = true
 
-			if req.Service() != service {
-				return fmt.Errorf("expected service: %s got %s", service, req.Service())
+			if req.App() != service {
+				return fmt.Errorf("expected service: %s got %s", service, req.App())
 			}
 
 			if req.Endpoint() != endpoint {
@@ -114,8 +114,8 @@ func TestCallWrapper(t *testing.T) {
 		return func(ctx context.Context, node string, req client.Request, rsp interface{}, opts client.CallOptions) error {
 			called = true
 
-			if req.Service() != service {
-				return fmt.Errorf("expected service: %s got %s", service, req.Service())
+			if req.App() != service {
+				return fmt.Errorf("expected service: %s got %s", service, req.App())
 			}
 
 			if req.Endpoint() != endpoint {
@@ -137,10 +137,10 @@ func TestCallWrapper(t *testing.T) {
 		client.WrapCall(wrap),
 	)
 
-	r.Options().Registry.Register(&registry.Service{
+	r.Options().Registry.Register(&registry.App{
 		Name:    service,
 		Version: "latest",
-		Nodes: []*registry.Node{
+		Instances: []*registry.Instance{
 			{
 				Id:      id,
 				Address: address,

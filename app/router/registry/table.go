@@ -55,8 +55,8 @@ func (t *table) pruneRoutes(olderThan time.Duration) {
 	}
 }
 
-// deleteService removes the entire service
-func (t *table) deleteService(service, network string) {
+// deleteApp removes the entire service
+func (t *table) deleteApp(service, network string) {
 	t.Lock()
 	defer t.Unlock()
 
@@ -107,7 +107,7 @@ func (t *table) sendEvent(e *router.Event) {
 
 // Create creates new route in the routing table
 func (t *table) Create(r router.Route) error {
-	service := r.Service
+	service := r.App
 	sum := r.Hash()
 
 	t.Lock()
@@ -138,7 +138,7 @@ func (t *table) Create(r router.Route) error {
 
 // Delete deletes the route from the routing table
 func (t *table) Delete(r router.Route) error {
-	service := r.Service
+	service := r.App
 	sum := r.Hash()
 
 	t.Lock()
@@ -170,7 +170,7 @@ func (t *table) Delete(r router.Route) error {
 
 // Update updates routing table with the new route
 func (t *table) Update(r router.Route) error {
-	service := r.Service
+	service := r.App
 	sum := r.Hash()
 
 	t.Lock()
@@ -211,8 +211,8 @@ func (t *table) Read(opts ...router.ReadOption) ([]router.Route, error) {
 	var routes []router.Route
 
 	// get the routes based on options passed
-	if len(options.Service) > 0 {
-		routeMap, ok := t.routes[options.Service]
+	if len(options.App) > 0 {
+		routeMap, ok := t.routes[options.App]
 		if !ok {
 			return nil, router.ErrRouteNotFound
 		}
@@ -236,7 +236,7 @@ func (t *table) Read(opts ...router.ReadOption) ([]router.Route, error) {
 func (t *table) Watch(opts ...router.WatchOption) (router.Watcher, error) {
 	// by default watch everything
 	wopts := router.WatchOptions{
-		Service: "*",
+		App: "*",
 	}
 
 	for _, o := range opts {

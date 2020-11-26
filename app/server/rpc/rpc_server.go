@@ -43,7 +43,7 @@ type rpcServer struct {
 	// graceful exit
 	wg *sync.WaitGroup
 
-	rsvc *registry.Service
+	rsvc *registry.App
 }
 
 var (
@@ -110,7 +110,7 @@ func (s *rpcServer) HandleEvent(msg *event.Message) error {
 	ctx := metadata.NewContext(context.Background(), hdr)
 
 	// TODO: inspect message header
-	// Service means a request
+	// App means a request
 	// Event means a message
 
 	rpcMsg := &rpcMessage{
@@ -184,7 +184,7 @@ func (s *rpcServer) ServeConn(sock network.Socket) {
 		}
 
 		// check the message header for
-		// Service is a request
+		// App is a request
 		// Event is a message
 		if t := msg.Header["Event"]; len(t) > 0 {
 			// TODO: handle the error event
@@ -325,7 +325,7 @@ func (s *rpcServer) ServeConn(sock network.Socket) {
 
 		// internal request
 		request := &rpcRequest{
-			service:     getHeader("Service", msg.Header),
+			service:     getHeader("App", msg.Header),
 			method:      getHeader("Method", msg.Header),
 			endpoint:    getHeader("Endpoint", msg.Header),
 			contentType: ct,
@@ -522,7 +522,7 @@ func (s *rpcServer) Register() error {
 		return nil
 	}
 
-	regFunc := func(service *registry.Service) error {
+	regFunc := func(service *registry.App) error {
 		// create registry options
 		rOpts := []registry.RegisterOption{
 			registry.RegisterTTL(config.RegisterTTL),
@@ -558,7 +558,7 @@ func (s *rpcServer) Register() error {
 
 	var err error
 	var advt, host, port string
-	var cacheService bool
+	var cacheApp bool
 
 	// check the advertise address first
 	// if it exists then use it, otherwise
@@ -580,7 +580,7 @@ func (s *rpcServer) Register() error {
 	}
 
 	if ip := net.ParseIP(host); ip != nil {
-		cacheService = true
+		cacheApp = true
 	}
 
 	addr, err := addr.Extract(host)
@@ -597,7 +597,7 @@ func (s *rpcServer) Register() error {
 	}
 
 	// register service
-	node := &registry.Node{
+	node := &registry.Instance{
 		Id:       config.Name + "-" + config.Id,
 		Address:  addr,
 		Metadata: md,
@@ -644,10 +644,10 @@ func (s *rpcServer) Register() error {
 		endpoints = append(endpoints, e.Endpoints()...)
 	}
 
-	service := &registry.Service{
+	service := &registry.App{
 		Name:      config.Name,
 		Version:   config.Version,
-		Nodes:     []*registry.Node{node},
+		Instances:     []*registry.Instance{node},
 		Endpoints: endpoints,
 	}
 
@@ -710,7 +710,7 @@ func (s *rpcServer) Register() error {
 		}
 		s.subscribers[sb] = []event.Subscriber{sub}
 	}
-	if cacheService {
+	if cacheApp {
 		s.rsvc = service
 	}
 	s.registered = true
@@ -760,15 +760,15 @@ func (s *rpcServer) Deregister() error {
 		addr = mnet.HostPort(addr, port)
 	}
 
-	node := &registry.Node{
+	node := &registry.Instance{
 		Id:      config.Name + "-" + config.Id,
 		Address: addr,
 	}
 
-	service := &registry.Service{
+	service := &registry.App{
 		Name:    config.Name,
 		Version: config.Version,
-		Nodes:   []*registry.Node{node},
+		Instances:   []*registry.Instance{node},
 	}
 
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {

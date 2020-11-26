@@ -71,7 +71,7 @@ func (r *testRequest) ContentType() string {
 	return r.contentType
 }
 
-func (r *testRequest) Service() string {
+func (r *testRequest) App() string {
 	return r.service
 }
 

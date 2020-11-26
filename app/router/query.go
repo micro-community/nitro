@@ -120,7 +120,7 @@ func Filter(routes []Route, opts LookupOptions) []Route {
 	for _, route := range routes {
 		if isMatch(route, address, gateway, network, rtr, link) {
 			// add matchihg route to the routeMap
-			routeKey := route.Service + "@" + route.Network
+			routeKey := route.App + "@" + route.Network
 			routeMap[routeKey] = append(routeMap[routeKey], route)
 		}
 	}

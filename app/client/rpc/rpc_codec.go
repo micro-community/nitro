@@ -106,7 +106,7 @@ func setHeaders(m *codec.Message, stream string) {
 	}
 
 	set("Id", m.Id)
-	set("Service", m.Target)
+	set("App", m.Target)
 	set("Method", m.Method)
 	set("Endpoint", m.Endpoint)
 	set("Error", m.Error)
@@ -117,7 +117,7 @@ func setHeaders(m *codec.Message, stream string) {
 }
 
 // setupProtocol sets up the old protocol
-func setupProtocol(msg *network.Message, node *registry.Node) codec.NewCodec {
+func setupProtocol(msg *network.Message, node *registry.Instance) codec.NewCodec {
 	// get the protocol from node metadata
 	if protocol := node.Metadata["protocol"]; len(protocol) > 0 {
 		return nil

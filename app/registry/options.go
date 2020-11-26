@@ -28,7 +28,7 @@ type RegisterOptions struct {
 type WatchOptions struct {
 	// Specify a service to watch
 	// If blank, the watch is for all services
-	Service string
+	App string
 	// Other options for implementations of the interface
 	// can be stored in a context
 	Context context.Context
@@ -100,9 +100,9 @@ func RegisterDomain(d string) RegisterOption {
 }
 
 // Watch a service
-func WatchService(name string) WatchOption {
+func WatchApp(name string) WatchOption {
 	return func(o *WatchOptions) {
-		o.Service = name
+		o.App = name
 	}
 }
 

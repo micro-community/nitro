@@ -14,7 +14,7 @@ type Watcher interface {
 // the watcher. Actions can be create, update, delete
 type Result struct {
 	Action  string
-	Service *Service
+	App *App
 }
 
 // EventType defines registry event type
@@ -51,6 +51,6 @@ type Event struct {
 	Type EventType
 	// Timestamp is event timestamp
 	Timestamp time.Time
-	// Service is registry service
-	Service *Service
+	// App is registry service
+	App *App
 }

@@ -6,16 +6,16 @@ import (
 	"github.com/gonitro/nitro/app/registry"
 )
 
-func serviceToRecord(s *registry.Service, ttl time.Duration) *record {
+func serviceToRecord(s *registry.App, ttl time.Duration) *record {
 	metadata := make(map[string]string, len(s.Metadata))
 	for k, v := range s.Metadata {
 		metadata[k] = v
 	}
 
-	nodes := make(map[string]*node, len(s.Nodes))
-	for _, n := range s.Nodes {
+	nodes := make(map[string]*node, len(s.Instances))
+	for _, n := range s.Instances {
 		nodes[n.Id] = &node{
-			Node:     n,
+			Instance:     n,
 			TTL:      ttl,
 			LastSeen: time.Now(),
 		}
@@ -30,12 +30,12 @@ func serviceToRecord(s *registry.Service, ttl time.Duration) *record {
 		Name:      s.Name,
 		Version:   s.Version,
 		Metadata:  metadata,
-		Nodes:     nodes,
+		Instances:     nodes,
 		Endpoints: endpoints,
 	}
 }
 
-func recordToService(r *record, domain string) *registry.Service {
+func recordToApp(r *record, domain string) *registry.App {
 	metadata := make(map[string]string, len(r.Metadata))
 	for k, v := range r.Metadata {
 		metadata[k] = v
@@ -68,15 +68,15 @@ func recordToService(r *record, domain string) *registry.Service {
 		}
 	}
 
-	nodes := make([]*registry.Node, len(r.Nodes))
+	nodes := make([]*registry.Instance, len(r.Instances))
 	i := 0
-	for _, n := range r.Nodes {
+	for _, n := range r.Instances {
 		metadata := make(map[string]string, len(n.Metadata))
 		for k, v := range n.Metadata {
 			metadata[k] = v
 		}
 
-		nodes[i] = &registry.Node{
+		nodes[i] = &registry.Instance{
 			Id:       n.Id,
 			Address:  n.Address,
 			Metadata: metadata,
@@ -84,11 +84,11 @@ func recordToService(r *record, domain string) *registry.Service {
 		i++
 	}
 
-	return &registry.Service{
+	return &registry.App{
 		Name:      r.Name,
 		Version:   r.Version,
 		Metadata:  metadata,
 		Endpoints: endpoints,
-		Nodes:     nodes,
+		Instances:     nodes,
 	}
 }

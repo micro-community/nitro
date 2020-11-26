@@ -21,8 +21,8 @@ func (w *tableWatcher) Next() (*router.Event, error) {
 	for {
 		select {
 		case res := <-w.resChan:
-			switch w.opts.Service {
-			case res.Route.Service, "*":
+			switch w.opts.App {
+			case res.Route.App, "*":
 				return res, nil
 			default:
 				continue

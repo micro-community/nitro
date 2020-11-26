@@ -79,14 +79,14 @@ func DefaultOptions() Options {
 }
 
 type ReadOptions struct {
-	Service string
+	App string
 }
 
 type ReadOption func(o *ReadOptions)
 
-// ReadService sets the service to read from the table
-func ReadService(s string) ReadOption {
+// ReadApp sets the service to read from the table
+func ReadApp(s string) ReadOption {
 	return func(o *ReadOptions) {
-		o.Service = s
+		o.App = s
 	}
 }

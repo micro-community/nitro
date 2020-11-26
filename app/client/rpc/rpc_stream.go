@@ -59,7 +59,7 @@ func (r *rpcStream) Send(msg interface{}) error {
 
 	req := codec.Message{
 		Id:       r.id,
-		Target:   r.request.Service(),
+		Target:   r.request.App(),
 		Method:   r.request.Method(),
 		Endpoint: r.request.Endpoint(),
 		Type:     codec.Request,
@@ -146,7 +146,7 @@ func (r *rpcStream) Close() error {
 			// no need to check for error
 			r.codec.Write(&codec.Message{
 				Id:       r.id,
-				Target:   r.request.Service(),
+				Target:   r.request.App(),
 				Method:   r.request.Method(),
 				Endpoint: r.request.Endpoint(),
 				Type:     codec.Error,

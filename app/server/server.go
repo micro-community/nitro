@@ -58,8 +58,8 @@ type Message interface {
 
 // Request is a synchronous request interface
 type Request interface {
-	// Service name requested
-	Service() string
+	// App name requested
+	App() string
 	// The action requested
 	Method() string
 	// Endpoint name requested

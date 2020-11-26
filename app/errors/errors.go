@@ -141,8 +141,8 @@ func BadGateway(id, format string, a ...interface{}) error {
 	}
 }
 
-// ServiceUnavailable generates a 503 error
-func ServiceUnavailable(id, format string, a ...interface{}) error {
+// AppUnavailable generates a 503 error
+func AppUnavailable(id, format string, a ...interface{}) error {
 	return &Error{
 		Id:     id,
 		Code:   503,
