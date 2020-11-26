@@ -20,7 +20,7 @@ func main() {
 	// name it
 	prog.Name("helloworld")
 	// register a function
-	prog.Register(new(Handler))
+	prog.Add(new(Handler))
 	// run the program
 	prog.Run()
 }

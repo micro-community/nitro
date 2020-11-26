@@ -16,7 +16,7 @@ type Options struct {
 	Context context.Context
 }
 
-type RegisterOptions struct {
+type AddOptions struct {
 	TTL time.Duration
 	// Other options for implementations of the interface
 	// can be stored in a context
@@ -81,20 +81,20 @@ func TLSConfig(t *tls.Config) Option {
 	}
 }
 
-func RegisterTTL(t time.Duration) RegisterOption {
-	return func(o *RegisterOptions) {
+func AddTTL(t time.Duration) AddOption {
+	return func(o *AddOptions) {
 		o.TTL = t
 	}
 }
 
-func RegisterContext(ctx context.Context) RegisterOption {
-	return func(o *RegisterOptions) {
+func AddContext(ctx context.Context) AddOption {
+	return func(o *AddOptions) {
 		o.Context = ctx
 	}
 }
 
-func RegisterDomain(d string) RegisterOption {
-	return func(o *RegisterOptions) {
+func AddDomain(d string) AddOption {
+	return func(o *AddOptions) {
 		o.Domain = d
 	}
 }

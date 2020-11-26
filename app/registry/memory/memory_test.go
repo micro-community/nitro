@@ -107,7 +107,7 @@ func TestMemoryRegistry(t *testing.T) {
 	for _, v := range testData {
 		serviceCount := 0
 		for _, service := range v {
-			if err := m.Register(service); err != nil {
+			if err := m.Add(service); err != nil {
 				t.Errorf("Unexpected register error: %v", err)
 			}
 			serviceCount++
@@ -171,7 +171,7 @@ func TestMemoryRegistryTTL(t *testing.T) {
 
 	for _, v := range testData {
 		for _, service := range v {
-			if err := m.Register(service, registry.RegisterTTL(time.Millisecond)); err != nil {
+			if err := m.Add(service, registry.AddTTL(time.Millisecond)); err != nil {
 				t.Fatal(err)
 			}
 		}
@@ -200,7 +200,7 @@ func TestMemoryRegistryTTLConcurrent(t *testing.T) {
 
 	for _, v := range testData {
 		for _, service := range v {
-			if err := m.Register(service, registry.RegisterTTL(waitTime/2)); err != nil {
+			if err := m.Add(service, registry.AddTTL(waitTime/2)); err != nil {
 				t.Fatal(err)
 			}
 		}
@@ -249,11 +249,11 @@ func TestMemoryWildcard(t *testing.T) {
 	m := NewRegistry()
 	testSrv := &registry.App{Name: "foo", Version: "1.0.0"}
 
-	if err := m.Register(testSrv, registry.RegisterDomain("one")); err != nil {
-		t.Fatalf("Register err: %v", err)
+	if err := m.Add(testSrv, registry.AddDomain("one")); err != nil {
+		t.Fatalf("Add err: %v", err)
 	}
-	if err := m.Register(testSrv, registry.RegisterDomain("two")); err != nil {
-		t.Fatalf("Register err: %v", err)
+	if err := m.Add(testSrv, registry.AddDomain("two")); err != nil {
+		t.Fatalf("Add err: %v", err)
 	}
 
 	if recs, err := m.List(registry.ListDomain("one")); err != nil {

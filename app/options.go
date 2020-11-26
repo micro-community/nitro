@@ -113,17 +113,17 @@ func Metadata(md map[string]string) Option {
 	}
 }
 
-// RegisterTTL specifies the TTL to use when registering the app
-func RegisterTTL(t time.Duration) Option {
+// AddTTL specifies the TTL to use when registering the app
+func AddTTL(t time.Duration) Option {
 	return func(o *Options) {
-		o.Server.Init(server.RegisterTTL(t))
+		o.Server.Init(server.AddTTL(t))
 	}
 }
 
-// RegisterInterval specifies the interval on which to re-register
-func RegisterInterval(t time.Duration) Option {
+// AddInterval specifies the interval on which to re-register
+func AddInterval(t time.Duration) Option {
 	return func(o *Options) {
-		o.Server.Init(server.RegisterInterval(t))
+		o.Server.Init(server.AddInterval(t))
 	}
 }
 

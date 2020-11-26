@@ -16,13 +16,13 @@ type Server interface {
 	Init(...Option) error
 	// Retrieve the options
 	Options() Options
-	// Register a handler
+	// Add a handler
 	Handle(Handler) error
 	// Create a new handler
 	NewHandler(interface{}, ...HandlerOption) Handler
 	// Create a new subscriber
 	NewSubscriber(string, interface{}, ...SubscriberOption) Subscriber
-	// Register a subscriber
+	// Add a subscriber
 	Subscribe(Subscriber) error
 	// Start the server
 	Start() error
@@ -133,11 +133,11 @@ type Subscriber interface {
 type Option func(*Options)
 
 var (
-	DefaultAddress          = "unix:///tmp/nitro.sock"
-	DefaultName             = "nitro"
-	DefaultVersion          = "latest"
-	DefaultId               = uuid.New().String()
-	DefaultRegisterCheck    = func(context.Context) error { return nil }
-	DefaultRegisterInterval = time.Second * 30
-	DefaultRegisterTTL      = time.Second * 90
+	DefaultAddress     = "unix:///tmp/nitro.sock"
+	DefaultName        = "nitro"
+	DefaultVersion     = "latest"
+	DefaultId          = uuid.New().String()
+	DefaultAddCheck    = func(context.Context) error { return nil }
+	DefaultAddInterval = time.Second * 30
+	DefaultAddTTL      = time.Second * 90
 )

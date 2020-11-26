@@ -453,7 +453,7 @@ func (router *router) Handle(h server.Handler) error {
 
 	// Check there are methods
 	if len(s.method) == 0 {
-		return errors.New("rpc Register: type " + s.name + " has no exported methods of suitable type")
+		return errors.New("rpc Add: type " + s.name + " has no exported methods of suitable type")
 	}
 
 	// save handler

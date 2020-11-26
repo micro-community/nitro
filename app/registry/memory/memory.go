@@ -158,12 +158,12 @@ func (m *Registry) Options() registry.Options {
 	return m.options
 }
 
-func (m *Registry) Register(s *registry.App, opts ...registry.RegisterOption) error {
+func (m *Registry) Add(s *registry.App, opts ...registry.AddOption) error {
 	m.Lock()
 	defer m.Unlock()
 
 	// parse the options, fallback to the default domain
-	var options registry.RegisterOptions
+	var options registry.AddOptions
 	for _, o := range opts {
 		o(&options)
 	}

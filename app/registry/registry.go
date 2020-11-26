@@ -28,7 +28,7 @@ type Registry interface {
 	Get(string, ...GetOption) ([]*App, error)
 	List(...ListOption) ([]*App, error)
 	Watch(...WatchOption) (Watcher, error)
-	Register(*App, ...RegisterOption) error
+	Add(*App, ...AddOption) error
 	Remove(*App, ...RemoveOption) error
 	String() string
 }
@@ -62,7 +62,7 @@ type Value struct {
 
 type Option func(*Options)
 
-type RegisterOption func(*RegisterOptions)
+type AddOption func(*AddOptions)
 
 type WatchOption func(*WatchOptions)
 

@@ -32,12 +32,12 @@ type Options struct {
 	HdlrWrappers []HandlerWrapper
 	SubWrappers  []SubscriberWrapper
 
-	// RegisterCheck runs a check function before registering the service
-	RegisterCheck func(context.Context) error
+	// AddCheck runs a check function before registering the service
+	AddCheck func(context.Context) error
 	// The register expiry time
-	RegisterTTL time.Duration
+	AddTTL time.Duration
 	// The interval on which to register
-	RegisterInterval time.Duration
+	AddInterval time.Duration
 
 	// The router for requests
 	Router Router
@@ -52,10 +52,10 @@ type Options struct {
 
 func newOptions(opt ...Option) Options {
 	opts := Options{
-		Codecs:           make(map[string]codec.NewCodec),
-		Metadata:         map[string]string{},
-		RegisterInterval: DefaultRegisterInterval,
-		RegisterTTL:      DefaultRegisterTTL,
+		Codecs:      make(map[string]codec.NewCodec),
+		Metadata:    map[string]string{},
+		AddInterval: DefaultAddInterval,
+		AddTTL:      DefaultAddTTL,
 	}
 
 	for _, o := range opt {
@@ -74,8 +74,8 @@ func newOptions(opt ...Option) Options {
 		opts.Transport = tmem.NewTransport()
 	}
 
-	if opts.RegisterCheck == nil {
-		opts.RegisterCheck = DefaultRegisterCheck
+	if opts.AddCheck == nil {
+		opts.AddCheck = DefaultAddCheck
 	}
 
 	if len(opts.Address) == 0 {
@@ -190,24 +190,24 @@ func Metadata(md map[string]string) Option {
 	}
 }
 
-// RegisterCheck run func before registry service
-func RegisterCheck(fn func(context.Context) error) Option {
+// AddCheck run func before registry service
+func AddCheck(fn func(context.Context) error) Option {
 	return func(o *Options) {
-		o.RegisterCheck = fn
+		o.AddCheck = fn
 	}
 }
 
-// Register the service with a TTL
-func RegisterTTL(t time.Duration) Option {
+// Add the service with a TTL
+func AddTTL(t time.Duration) Option {
 	return func(o *Options) {
-		o.RegisterTTL = t
+		o.AddTTL = t
 	}
 }
 
-// Register the service with at interval
-func RegisterInterval(t time.Duration) Option {
+// Add the service with at interval
+func AddInterval(t time.Duration) Option {
 	return func(o *Options) {
-		o.RegisterInterval = t
+		o.AddInterval = t
 	}
 }
 

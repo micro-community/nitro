@@ -10,10 +10,10 @@ import (
 
 func newOptions(opt ...server.Option) server.Options {
 	opts := server.Options{
-		Codecs:           make(map[string]codec.NewCodec),
-		Metadata:         map[string]string{},
-		RegisterInterval: server.DefaultRegisterInterval,
-		RegisterTTL:      server.DefaultRegisterTTL,
+		Codecs:      make(map[string]codec.NewCodec),
+		Metadata:    map[string]string{},
+		AddInterval: server.DefaultAddInterval,
+		AddTTL:      server.DefaultAddTTL,
 	}
 
 	for _, o := range opt {
@@ -32,8 +32,8 @@ func newOptions(opt ...server.Option) server.Options {
 		opts.Transport = tmem.NewTransport()
 	}
 
-	if opts.RegisterCheck == nil {
-		opts.RegisterCheck = server.DefaultRegisterCheck
+	if opts.AddCheck == nil {
+		opts.AddCheck = server.DefaultAddCheck
 	}
 
 	if len(opts.Address) == 0 {

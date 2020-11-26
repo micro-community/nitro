@@ -137,7 +137,7 @@ func TestCallWrapper(t *testing.T) {
 		client.WrapCall(wrap),
 	)
 
-	r.Options().Registry.Register(&registry.App{
+	r.Options().Registry.Add(&registry.App{
 		Name:    service,
 		Version: "latest",
 		Instances: []*registry.Instance{
