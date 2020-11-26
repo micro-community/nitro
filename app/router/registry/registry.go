@@ -130,7 +130,7 @@ func (r *rtr) createRoutes(service *registry.App, network string) []router.Route
 
 	for _, node := range service.Instances {
 		routes = append(routes, router.Route{
-			App:  service.Name,
+			App:      service.Name,
 			Address:  node.Address,
 			Gateway:  "",
 			Network:  network,
@@ -370,7 +370,7 @@ func (r *rtr) start() error {
 	if r.options.Gateway != "" {
 		// note, the only non-default value is the gateway
 		route := router.Route{
-			App: "*",
+			App:     "*",
 			Address: "*",
 			Gateway: r.options.Gateway,
 			Network: "*",

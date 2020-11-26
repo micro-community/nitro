@@ -38,7 +38,7 @@ type App struct {
 	Version   string            `json:"version"`
 	Metadata  map[string]string `json:"metadata"`
 	Endpoints []*Endpoint       `json:"endpoints"`
-	Instances     []*Instance           `json:"nodes"`
+	Instances []*Instance       `json:"nodes"`
 }
 
 type Instance struct {

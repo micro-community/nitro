@@ -10,7 +10,7 @@ func testSetup() (*table, router.Route) {
 	table := newTable()
 
 	route := router.Route{
-		App: "dest.svc",
+		App:     "dest.svc",
 		Address: "dest.addr",
 		Gateway: "dest.gw",
 		Network: "dest.network",

@@ -49,7 +49,7 @@ func (s *static) Lookup(service string, opts ...router.LookupOption) ([]router.R
 
 	return []router.Route{
 		router.Route{
-			App: service,
+			App:     service,
 			Address: address,
 			Gateway: options.Gateway,
 			Network: options.Network,

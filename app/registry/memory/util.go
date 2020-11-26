@@ -15,7 +15,7 @@ func serviceToRecord(s *registry.App, ttl time.Duration) *record {
 	nodes := make(map[string]*node, len(s.Instances))
 	for _, n := range s.Instances {
 		nodes[n.Id] = &node{
-			Instance:     n,
+			Instance: n,
 			TTL:      ttl,
 			LastSeen: time.Now(),
 		}
@@ -30,7 +30,7 @@ func serviceToRecord(s *registry.App, ttl time.Duration) *record {
 		Name:      s.Name,
 		Version:   s.Version,
 		Metadata:  metadata,
-		Instances:     nodes,
+		Instances: nodes,
 		Endpoints: endpoints,
 	}
 }
@@ -89,6 +89,6 @@ func recordToApp(r *record, domain string) *registry.App {
 		Version:   r.Version,
 		Metadata:  metadata,
 		Endpoints: endpoints,
-		Instances:     nodes,
+		Instances: nodes,
 	}
 }

@@ -647,7 +647,7 @@ func (s *rpcServer) Register() error {
 	service := &registry.App{
 		Name:      config.Name,
 		Version:   config.Version,
-		Instances:     []*registry.Instance{node},
+		Instances: []*registry.Instance{node},
 		Endpoints: endpoints,
 	}
 
@@ -766,9 +766,9 @@ func (s *rpcServer) Deregister() error {
 	}
 
 	service := &registry.App{
-		Name:    config.Name,
-		Version: config.Version,
-		Instances:   []*registry.Instance{node},
+		Name:      config.Name,
+		Version:   config.Version,
+		Instances: []*registry.Instance{node},
 	}
 
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {

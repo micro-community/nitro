@@ -26,7 +26,7 @@ type record struct {
 	Name      string
 	Version   string
 	Metadata  map[string]string
-	Instances     map[string]*node
+	Instances map[string]*node
 	Endpoints []*registry.Endpoint
 }
 
