@@ -146,7 +146,7 @@ func TestMemoryRegistry(t *testing.T) {
 	// deregister
 	for _, v := range testData {
 		for _, service := range v {
-			if err := m.Deregister(service); err != nil {
+			if err := m.Remove(service); err != nil {
 				t.Errorf("Unexpected deregister error: %v", err)
 			}
 		}

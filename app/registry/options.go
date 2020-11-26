@@ -36,7 +36,7 @@ type WatchOptions struct {
 	Domain string
 }
 
-type DeregisterOptions struct {
+type RemoveOptions struct {
 	Context context.Context
 	// Domain the service was registered in
 	Domain string
@@ -118,14 +118,14 @@ func WatchDomain(d string) WatchOption {
 	}
 }
 
-func DeregisterContext(ctx context.Context) DeregisterOption {
-	return func(o *DeregisterOptions) {
+func RemoveContext(ctx context.Context) RemoveOption {
+	return func(o *RemoveOptions) {
 		o.Context = ctx
 	}
 }
 
-func DeregisterDomain(d string) DeregisterOption {
-	return func(o *DeregisterOptions) {
+func RemoveDomain(d string) RemoveOption {
+	return func(o *RemoveOptions) {
 		o.Domain = d
 	}
 }

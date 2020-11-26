@@ -251,12 +251,12 @@ func (m *Registry) Register(s *registry.App, opts ...registry.RegisterOption) er
 	return nil
 }
 
-func (m *Registry) Deregister(s *registry.App, opts ...registry.DeregisterOption) error {
+func (m *Registry) Remove(s *registry.App, opts ...registry.RemoveOption) error {
 	m.Lock()
 	defer m.Unlock()
 
 	// parse the options, fallback to the default domain
-	var options registry.DeregisterOptions
+	var options registry.RemoveOptions
 	for _, o := range opts {
 		o(&options)
 	}

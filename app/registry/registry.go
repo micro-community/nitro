@@ -25,11 +25,11 @@ var (
 type Registry interface {
 	Init(...Option) error
 	Options() Options
-	Register(*App, ...RegisterOption) error
-	Deregister(*App, ...DeregisterOption) error
 	Get(string, ...GetOption) ([]*App, error)
 	List(...ListOption) ([]*App, error)
 	Watch(...WatchOption) (Watcher, error)
+	Register(*App, ...RegisterOption) error
+	Remove(*App, ...RemoveOption) error
 	String() string
 }
 
@@ -66,7 +66,7 @@ type RegisterOption func(*RegisterOptions)
 
 type WatchOption func(*WatchOptions)
 
-type DeregisterOption func(*DeregisterOptions)
+type RemoveOption func(*RemoveOptions)
 
 type GetOption func(*GetOptions)
 

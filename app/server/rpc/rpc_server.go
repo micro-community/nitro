@@ -718,7 +718,7 @@ func (s *rpcServer) Register() error {
 	return nil
 }
 
-func (s *rpcServer) Deregister() error {
+func (s *rpcServer) Remove() error {
 	var err error
 	var advt, host, port string
 
@@ -772,9 +772,9 @@ func (s *rpcServer) Deregister() error {
 	}
 
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-		log.Infof("Registry [%s] Deregistering node: %s", config.Registry.String(), node.Id)
+		log.Infof("Registry [%s] Removeing node: %s", config.Registry.String(), node.Id)
 	}
-	if err := config.Registry.Deregister(service, registry.DeregisterDomain(s.opts.Namespace)); err != nil {
+	if err := config.Registry.Remove(service, registry.RemoveDomain(s.opts.Namespace)); err != nil {
 		return err
 	}
 
@@ -918,7 +918,7 @@ func (s *rpcServer) Start() error {
 						log.Errorf("Server %s-%s register check error: %s, deregister it", config.Name, config.Id, rerr)
 					}
 					// deregister self in case of error
-					if err := s.Deregister(); err != nil {
+					if err := s.Remove(); err != nil {
 						if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 							log.Errorf("Server %s-%s deregister error: %s", config.Name, config.Id, err)
 						}
@@ -947,7 +947,7 @@ func (s *rpcServer) Start() error {
 		s.RUnlock()
 		if registered {
 			// deregister self
-			if err := s.Deregister(); err != nil {
+			if err := s.Remove(); err != nil {
 				if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 					log.Errorf("Server %s-%s deregister error: %s", config.Name, config.Id, err)
 				}
