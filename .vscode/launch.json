@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug run go",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "GOROOT":"C:/Go",
+      },
+      "args": [
+      ]
+    },
+    {
+      "name": "Debug run example Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/examples/program/server/main.go",
+    },
+    {
+      "name": "Debug run example Client",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/examples/program/client/main.go",
+    },
+  ]
+}

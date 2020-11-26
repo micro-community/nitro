@@ -49,6 +49,7 @@ func (m *memoryCache) String() string {
 	return "memory"
 }
 
+//NewCache return cache
 func NewCache(opts ...cache.Option) cache.Cache {
 	return &memoryCache{
 		values: make(map[string]interface{}),

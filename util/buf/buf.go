@@ -42,6 +42,7 @@ func (b *buffer) Close() error {
 	return nil
 }
 
+//New return a buffer pointer
 func New(b *bytes.Buffer) *buffer {
 	if b == nil {
 		b = bytes.NewBuffer(nil)
@@ -49,6 +50,7 @@ func New(b *bytes.Buffer) *buffer {
 	return &buffer{b}
 }
 
+//NewPool return a pool pointer
 func NewPool() *pool {
 	return &pool{
 		p: sync.Pool{
