@@ -9,6 +9,7 @@ import (
 	"github.com/gonitro/nitro/app/codec"
 )
 
+//Codec for byte
 type Codec struct {
 	Conn io.ReadWriteCloser
 }

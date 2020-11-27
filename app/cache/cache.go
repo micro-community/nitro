@@ -13,10 +13,12 @@ type Cache interface {
 	String() string
 }
 
+//Options for cache
 type Options struct {
 	Nodes []string
 }
 
+//Option to set Options
 type Option func(o *Options)
 
 // Nodes sets the nodes for the cache

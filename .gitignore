@@ -35,3 +35,4 @@ _cgo_export.*
 *.swp
 *.swo
 *.orig
+__debug_bin

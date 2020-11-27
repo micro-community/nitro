@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//NewOptions for crypto
 func NewOptions(opts ...Option) Options {
 	var options Options
 	for _, o := range opts {
@@ -13,8 +14,8 @@ func NewOptions(opts ...Option) Options {
 	return options
 }
 
-type Options struct {
-	// Issuer of the service's account
+//Options for crypto
+type Options struct { // Issuer of the service's account
 	Issuer string
 	// ID is the services auth ID
 	ID string
@@ -34,6 +35,7 @@ type Options struct {
 	Context context.Context
 }
 
+//Option to set Options
 type Option func(o *Options)
 
 // Addrs is the auth addresses to use
@@ -99,10 +101,11 @@ type GenerateOptions struct {
 	Secret string
 	// Issuer of the account, e.g. micro
 	Issuer string
-	// Name of the acouunt e.g. an email or username
+	// Name of the account e.g. an email or username
 	Name string
 }
 
+//GenerateOption to set GenerateOptions
 type GenerateOption func(o *GenerateOptions)
 
 // WithSecret for the generated account
@@ -163,12 +166,13 @@ func NewGenerateOptions(opts ...GenerateOption) GenerateOptions {
 	return options
 }
 
+//TokenOptions for crypto
 type TokenOptions struct {
 	// ID for the account
 	ID string
 	// Secret for the account
 	Secret string
-	// RefreshToken is used to refesh a token
+	// RefreshToken is used to refresh a token
 	RefreshToken string
 	// Expiry is the time the token should live for
 	Expiry time.Duration
@@ -176,6 +180,7 @@ type TokenOptions struct {
 	Issuer string
 }
 
+//TokenOption to set TokenOptions
 type TokenOption func(o *TokenOptions)
 
 // WithExpiry for the token
@@ -211,7 +216,7 @@ func NewTokenOptions(opts ...TokenOption) TokenOptions {
 		o(&options)
 	}
 
-	// set defualt expiry of token
+	// set default expiry of token
 	if options.Expiry == 0 {
 		options.Expiry = time.Minute
 	}
@@ -219,11 +224,13 @@ func NewTokenOptions(opts ...TokenOption) TokenOptions {
 	return options
 }
 
+//VerifyOptions for crypto
 type VerifyOptions struct {
 	Context   context.Context
 	Namespace string
 }
 
+//VerifyOption for crypto
 type VerifyOption func(o *VerifyOptions)
 
 func VerifyContext(ctx context.Context) VerifyOption {
@@ -231,6 +238,8 @@ func VerifyContext(ctx context.Context) VerifyOption {
 		o.Context = ctx
 	}
 }
+
+//VerifyNamespace for crypto
 func VerifyNamespace(ns string) VerifyOption {
 	return func(o *VerifyOptions) {
 		o.Namespace = ns

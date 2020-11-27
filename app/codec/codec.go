@@ -6,6 +6,7 @@ import (
 	"io"
 )
 
+//Message Type for codec
 const (
 	Error MessageType = iota
 	Request
@@ -13,10 +14,12 @@ const (
 	Event
 )
 
+//Error Message
 var (
 	ErrInvalidMessage = errors.New("invalid message")
 )
 
+//MessageType define
 type MessageType int
 
 // Takes in a connection/buffer and returns a new Codec

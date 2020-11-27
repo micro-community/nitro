@@ -1,8 +1,9 @@
 {
     "version": "0.1",
-    "words": [
+    "words":[
         "pgrpc",
         "urfave",
-        "gonitro"
+        "gonitro",
+        "JWTs"
     ]
 }
