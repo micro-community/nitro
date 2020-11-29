@@ -30,7 +30,7 @@ type record struct {
 	Endpoints []*registry.Endpoint
 }
 
-type Registry struct {
+type Table struct {
 	options registry.Options
 
 	sync.RWMutex
@@ -42,8 +42,8 @@ type Registry struct {
 // services is a KV map with service name as the key and a map of records as the value
 type services map[string]map[string]*record
 
-// NewRegistry returns an initialized in-memory registry
-func NewRegistry(opts ...registry.Option) registry.Registry {
+// NewTable returns an initialized in-memory registry
+func NewTable(opts ...registry.Option) registry.Table {
 	options := registry.Options{
 		Context: context.Background(),
 	}
@@ -57,7 +57,7 @@ func NewRegistry(opts ...registry.Option) registry.Registry {
 		records = make(services)
 	}
 
-	reg := &Registry{
+	reg := &Table{
 		options:  options,
 		records:  map[string]services{registry.DefaultDomain: records},
 		watchers: make(map[string]*Watcher),
@@ -68,7 +68,7 @@ func NewRegistry(opts ...registry.Option) registry.Registry {
 	return reg
 }
 
-func (m *Registry) ttlPrune() {
+func (m *Table) ttlPrune() {
 	prune := time.NewTicker(ttlPruneTime)
 	defer prune.Stop()
 
@@ -82,7 +82,7 @@ func (m *Registry) ttlPrune() {
 						for id, n := range record.Instances {
 							if n.TTL != 0 && time.Since(n.LastSeen) > n.TTL {
 								if logger.V(logger.DebugLevel, logger.DefaultLogger) {
-									logger.Debugf("Registry TTL expired for node %s of service %s", n.Id, service)
+									logger.Debugf("Table TTL expired for node %s of service %s", n.Id, service)
 								}
 								delete(m.records[domain][service][version].Instances, id)
 							}
@@ -95,7 +95,7 @@ func (m *Registry) ttlPrune() {
 	}
 }
 
-func (m *Registry) sendEvent(r *registry.Result) {
+func (m *Table) sendEvent(r *registry.Result) {
 	m.RLock()
 	watchers := make([]*Watcher, 0, len(m.watchers))
 	for _, w := range m.watchers {
@@ -118,7 +118,7 @@ func (m *Registry) sendEvent(r *registry.Result) {
 	}
 }
 
-func (m *Registry) Init(opts ...registry.Option) error {
+func (m *Table) Init(opts ...registry.Option) error {
 	for _, o := range opts {
 		o(&m.options)
 	}
@@ -154,11 +154,11 @@ func (m *Registry) Init(opts ...registry.Option) error {
 	return nil
 }
 
-func (m *Registry) Options() registry.Options {
+func (m *Table) Options() registry.Options {
 	return m.options
 }
 
-func (m *Registry) Add(s *registry.App, opts ...registry.AddOption) error {
+func (m *Table) Add(s *registry.App, opts ...registry.AddOption) error {
 	m.Lock()
 	defer m.Unlock()
 
@@ -193,7 +193,7 @@ func (m *Registry) Add(s *registry.App, opts ...registry.AddOption) error {
 	if _, ok := srvs[s.Name][s.Version]; !ok {
 		srvs[s.Name][s.Version] = r
 		if logger.V(logger.DebugLevel, logger.DefaultLogger) {
-			logger.Debugf("Registry added new service: %s, version: %s", s.Name, s.Version)
+			logger.Debugf("Table added new service: %s, version: %s", s.Name, s.Version)
 		}
 		m.records[options.Domain] = srvs
 		go m.sendEvent(&registry.Result{Action: "create", App: s})
@@ -233,7 +233,7 @@ func (m *Registry) Add(s *registry.App, opts ...registry.AddOption) error {
 
 	if addedInstances {
 		if logger.V(logger.DebugLevel, logger.DefaultLogger) {
-			logger.Debugf("Registry added new node to service: %s, version: %s", s.Name, s.Version)
+			logger.Debugf("Table added new node to service: %s, version: %s", s.Name, s.Version)
 		}
 		go m.sendEvent(&registry.Result{Action: "update", App: s})
 	} else {
@@ -251,7 +251,7 @@ func (m *Registry) Add(s *registry.App, opts ...registry.AddOption) error {
 	return nil
 }
 
-func (m *Registry) Remove(s *registry.App, opts ...registry.RemoveOption) error {
+func (m *Table) Remove(s *registry.App, opts ...registry.RemoveOption) error {
 	m.Lock()
 	defer m.Unlock()
 
@@ -292,7 +292,7 @@ func (m *Registry) Remove(s *registry.App, opts ...registry.RemoveOption) error 
 	for _, n := range s.Instances {
 		if _, ok := version.Instances[n.Id]; ok {
 			if logger.V(logger.DebugLevel, logger.DefaultLogger) {
-				logger.Debugf("Registry removed node from service: %s, version: %s", s.Name, s.Version)
+				logger.Debugf("Table removed node from service: %s, version: %s", s.Name, s.Version)
 			}
 			delete(version.Instances, n.Id)
 		}
@@ -313,7 +313,7 @@ func (m *Registry) Remove(s *registry.App, opts ...registry.RemoveOption) error 
 		go m.sendEvent(&registry.Result{Action: "delete", App: s})
 
 		if logger.V(logger.DebugLevel, logger.DefaultLogger) {
-			logger.Debugf("Registry removed service: %s", s.Name)
+			logger.Debugf("Table removed service: %s", s.Name)
 		}
 		return nil
 	}
@@ -322,13 +322,13 @@ func (m *Registry) Remove(s *registry.App, opts ...registry.RemoveOption) error 
 	delete(m.records[options.Domain][s.Name], s.Version)
 	go m.sendEvent(&registry.Result{Action: "delete", App: s})
 	if logger.V(logger.DebugLevel, logger.DefaultLogger) {
-		logger.Debugf("Registry removed service: %s, version: %s", s.Name, s.Version)
+		logger.Debugf("Table removed service: %s, version: %s", s.Name, s.Version)
 	}
 
 	return nil
 }
 
-func (m *Registry) Get(name string, opts ...registry.GetOption) ([]*registry.App, error) {
+func (m *Table) Get(name string, opts ...registry.GetOption) ([]*registry.App, error) {
 	// parse the options, fallback to the default domain
 	var options registry.GetOptions
 	for _, o := range opts {
@@ -390,7 +390,7 @@ func (m *Registry) Get(name string, opts ...registry.GetOption) ([]*registry.App
 	return result, nil
 }
 
-func (m *Registry) List(opts ...registry.ListOption) ([]*registry.App, error) {
+func (m *Table) List(opts ...registry.ListOption) ([]*registry.App, error) {
 	// parse the options, fallback to the default domain
 	var options registry.ListOptions
 	for _, o := range opts {
@@ -440,7 +440,7 @@ func (m *Registry) List(opts ...registry.ListOption) ([]*registry.App, error) {
 	return result, nil
 }
 
-func (m *Registry) Watch(opts ...registry.WatchOption) (registry.Watcher, error) {
+func (m *Table) Watch(opts ...registry.WatchOption) (registry.Watcher, error) {
 	// parse the options, fallback to the default domain
 	var wo registry.WatchOptions
 	for _, o := range opts {
@@ -465,6 +465,6 @@ func (m *Registry) Watch(opts ...registry.WatchOption) (registry.Watcher, error)
 	return w, nil
 }
 
-func (m *Registry) String() string {
+func (m *Table) String() string {
 	return "memory"
 }

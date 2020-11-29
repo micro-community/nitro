@@ -15,7 +15,7 @@ import (
 // Cache is the registry cache interface
 type Cache interface {
 	// embed the registry interface
-	registry.Registry
+	registry.Table
 	// stop the cache watcher
 	Stop()
 }
@@ -28,7 +28,7 @@ type Options struct {
 type Option func(o *Options)
 
 type cache struct {
-	registry.Registry
+	registry.Table
 	opts Options
 
 	// registry cache. services,ttls,watched,running are grouped by doman
@@ -140,7 +140,7 @@ func (c *cache) get(domain, service string) ([]*registry.App, error) {
 	// get does the actual request for a service and cache it
 	get := func(domain string, service string, cached []*registry.App) ([]*registry.App, error) {
 		// ask the registry
-		services, err := c.Registry.Get(service, registry.GetDomain(domain))
+		services, err := c.Table.Get(service, registry.GetDomain(domain))
 		if err != nil {
 			// set the error status
 			c.setStatus(err)
@@ -358,7 +358,7 @@ func (c *cache) run(domain, service string) {
 		time.Sleep(time.Duration(j) * time.Millisecond)
 
 		// create new watcher
-		w, err := c.Registry.Watch(
+		w, err := c.Table.Watch(
 			registry.WatchDomain(domain),
 			registry.WatchApp(service))
 		if err != nil {
@@ -498,7 +498,7 @@ func (c *cache) String() string {
 }
 
 // New returns a new cache
-func New(r registry.Registry, opts ...Option) Cache {
+func New(r registry.Table, opts ...Option) Cache {
 	rand.Seed(time.Now().UnixNano())
 	options := Options{
 		TTL: defaultTTL,
@@ -509,7 +509,7 @@ func New(r registry.Registry, opts ...Option) Cache {
 	}
 
 	return &cache{
-		Registry: r,
+		Table:    r,
 		opts:     options,
 		running:  make(map[string]bool),
 		watched:  make(map[string]watched),

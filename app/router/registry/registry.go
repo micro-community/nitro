@@ -175,7 +175,7 @@ func (r *rtr) manageRoutes(service *registry.App, action, network string) error 
 
 // manageRegistryRoutes applies action to all routes of each service found in the registry.
 // It returns error if either the services failed to be listed or the routing table action fails.
-func (r *rtr) loadRoutes(reg registry.Registry) error {
+func (r *rtr) loadRoutes(reg registry.Table) error {
 	services, err := reg.List(registry.ListDomain(registry.WildcardDomain))
 	if err != nil {
 		return fmt.Errorf("failed listing services: %v", err)

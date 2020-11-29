@@ -76,8 +76,8 @@ var (
 	}
 )
 
-func TestMemoryRegistry(t *testing.T) {
-	m := NewRegistry()
+func TestMemoryTable(t *testing.T) {
+	m := NewTable()
 
 	fn := func(k string, v []*registry.App) {
 		services, err := m.Get(k)
@@ -166,8 +166,8 @@ func TestMemoryRegistry(t *testing.T) {
 	}
 }
 
-func TestMemoryRegistryTTL(t *testing.T) {
-	m := NewRegistry()
+func TestMemoryTableTTL(t *testing.T) {
+	m := NewTable()
 
 	for _, v := range testData {
 		for _, service := range v {
@@ -193,10 +193,10 @@ func TestMemoryRegistryTTL(t *testing.T) {
 	}
 }
 
-func TestMemoryRegistryTTLConcurrent(t *testing.T) {
+func TestMemoryTableTTLConcurrent(t *testing.T) {
 	concurrency := 1000
 	waitTime := ttlPruneTime * 2
-	m := NewRegistry()
+	m := NewTable()
 
 	for _, v := range testData {
 		for _, service := range v {
@@ -246,7 +246,7 @@ func TestMemoryRegistryTTLConcurrent(t *testing.T) {
 }
 
 func TestMemoryWildcard(t *testing.T) {
-	m := NewRegistry()
+	m := NewTable()
 	testSrv := &registry.App{Name: "foo", Version: "1.0.0"}
 
 	if err := m.Add(testSrv, registry.AddDomain("one")); err != nil {

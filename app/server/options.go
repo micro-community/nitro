@@ -19,7 +19,7 @@ import (
 type Options struct {
 	Codecs       map[string]codec.NewCodec
 	Broker       event.Broker
-	Registry     registry.Registry
+	Registry     registry.Table
 	Auth         crypto.Auth
 	Transport    network.Transport
 	Metadata     map[string]string
@@ -67,7 +67,7 @@ func newOptions(opt ...Option) Options {
 	}
 
 	if opts.Registry == nil {
-		opts.Registry = memory.NewRegistry()
+		opts.Registry = memory.NewTable()
 	}
 
 	if opts.Transport == nil {
@@ -163,7 +163,7 @@ func Context(ctx context.Context) Option {
 }
 
 // Registry used for discovery
-func Registry(r registry.Registry) Option {
+func Registry(r registry.Table) Option {
 	return func(o *Options) {
 		o.Registry = r
 	}
