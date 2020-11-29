@@ -144,7 +144,7 @@ func New(opts ...Option) *nitroProgram {
 	b := mevent.NewBroker()
 	c := rpcClient.NewClient()
 	s := rpcServer.NewServer()
-	r := memory.NewRegistry()
+	r := memory.NewTable()
 	t := sock.NewTransport()
 	st := static.NewRouter()
 

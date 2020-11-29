@@ -178,7 +178,7 @@ func Transport(t network.Transport) Option {
 }
 
 // Registry sets the routers registry
-func Registry(r registry.Registry) Option {
+func Registry(r registry.Table) Option {
 	return func(o *Options) {
 		o.Router.Init(router.Registry(r))
 	}

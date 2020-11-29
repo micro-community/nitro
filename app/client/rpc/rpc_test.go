@@ -14,7 +14,7 @@ import (
 )
 
 func newTestRouter() router.Router {
-	reg := memory.NewRegistry(memory.Apps(testData))
+	reg := memory.NewTable(memory.Apps(testData))
 	return regRouter.NewRouter(router.Registry(reg))
 }
 

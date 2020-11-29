@@ -19,7 +19,7 @@ type Options struct {
 	// Network is network address
 	Network string
 	// Registry is the local registry
-	Registry registry.Registry
+	Registry registry.Table
 	// Context for additional options
 	Context context.Context
 	// Cache routes
@@ -55,7 +55,7 @@ func Network(n string) Option {
 }
 
 // Registry sets the local registry
-func Registry(r registry.Registry) Option {
+func Registry(r registry.Table) Option {
 	return func(o *Options) {
 		o.Registry = r
 	}
@@ -73,7 +73,7 @@ func DefaultOptions() Options {
 	return Options{
 		Id:       uuid.New().String(),
 		Network:  DefaultNetwork,
-		Registry: memory.NewRegistry(),
+		Registry: memory.NewTable(),
 		Context:  context.Background(),
 	}
 }

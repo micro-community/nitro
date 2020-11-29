@@ -15,7 +15,7 @@ type Options struct {
 
 	TLSConfig *tls.Config
 	// Registry used for clustering
-	Registry registry.Registry
+	Registry registry.Table
 	// Other options for implementations of the interface
 	// can be stored in a context
 	Context context.Context
@@ -94,7 +94,7 @@ func Queue(name string) SubscribeOption {
 	}
 }
 
-func Registry(r registry.Registry) Option {
+func Registry(r registry.Table) Option {
 	return func(o *Options) {
 		o.Registry = r
 	}

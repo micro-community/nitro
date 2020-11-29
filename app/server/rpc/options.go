@@ -25,7 +25,7 @@ func newOptions(opt ...server.Option) server.Options {
 	}
 
 	if opts.Registry == nil {
-		opts.Registry = memory.NewRegistry()
+		opts.Registry = memory.NewTable()
 	}
 
 	if opts.Transport == nil {

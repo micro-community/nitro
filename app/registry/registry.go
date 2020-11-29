@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	// WildcardDomain indicates any domain
-	WildcardDomain = "*"
+	// GlobalDomain indicates any domain
+	GlobalDomain = "*"
 	// DefaultDomain to use if none was provided in options
 	DefaultDomain = "nitro"
 )
@@ -22,7 +22,7 @@ var (
 // The registry provides an interface for service discovery
 // and an abstraction over varying implementations
 // {consul, etcd, zookeeper, ...}
-type Registry interface {
+type Table interface {
 	Init(...Option) error
 	Options() Options
 	Add(*App, ...AddOption) error

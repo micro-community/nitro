@@ -12,7 +12,7 @@ var (
 	// DefaultLocalMetric is default route cost for a local route
 	DefaultMetric int64 = 1
 	// DefaultNetwork is default micro network
-	DefaultNetwork = "micro"
+	DefaultNetwork = "nitro"
 	// ErrRouteNotFound is returned when no route was found in the routing table
 	ErrRouteNotFound = errors.New("route not found")
 	// ErrDuplicateRoute is returned when the route already exists

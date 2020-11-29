@@ -34,7 +34,7 @@ func (m *Watcher) Next() (*registry.Result, error) {
 			}
 
 			// only send the event if watching the wildcard or this specific domain
-			if m.wo.Domain == registry.WildcardDomain || m.wo.Domain == domain {
+			if m.wo.Domain == registry.GlobalDomain || m.wo.Domain == domain {
 				return r, nil
 			}
 		case <-m.exit:

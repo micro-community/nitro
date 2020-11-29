@@ -9,7 +9,7 @@ import (
 )
 
 func routerTestSetup() router.Router {
-	r := memory.NewRegistry()
+	r := memory.NewTable()
 	return NewRouter(router.Registry(r))
 }
 

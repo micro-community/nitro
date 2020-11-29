@@ -175,8 +175,8 @@ func (r *rtr) manageRoutes(service *registry.App, action, network string) error 
 
 // manageRegistryRoutes applies action to all routes of each service found in the registry.
 // It returns error if either the services failed to be listed or the routing table action fails.
-func (r *rtr) loadRoutes(reg registry.Registry) error {
-	services, err := reg.List(registry.ListDomain(registry.WildcardDomain))
+func (r *rtr) loadRoutes(reg registry.Table) error {
+	services, err := reg.List(registry.ListDomain(registry.GlobalDomain))
 	if err != nil {
 		return fmt.Errorf("failed listing services: %v", err)
 	}
@@ -276,9 +276,9 @@ func (r *rtr) Lookup(service string, opts ...router.LookupOption) ([]router.Rout
 	}
 
 	// lookup the route
-	logger.Tracef("Fetching route for %s domain: %v", service, registry.WildcardDomain)
+	logger.Tracef("Fetching route for %s domain: %v", service, registry.GlobalDomain)
 
-	services, err := r.options.Registry.Get(service, registry.GetDomain(registry.WildcardDomain))
+	services, err := r.options.Registry.Get(service, registry.GetDomain(registry.GlobalDomain))
 	if err == registry.ErrNotFound {
 		logger.Tracef("Failed to find route for %s", service)
 		return nil, router.ErrRouteNotFound
@@ -449,7 +449,7 @@ func (r *rtr) start() error {
 				return
 			default:
 				logger.Tracef("Router starting registry watch")
-				w, err := r.options.Registry.Watch(registry.WatchDomain(registry.WildcardDomain))
+				w, err := r.options.Registry.Watch(registry.WatchDomain(registry.GlobalDomain))
 				if err != nil {
 					if logger.V(logger.DebugLevel, logger.DefaultLogger) {
 						logger.Debugf("failed creating registry watcher: %v", err)

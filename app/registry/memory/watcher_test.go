@@ -12,7 +12,7 @@ func TestWatcher(t *testing.T) {
 		res:  make(chan *registry.Result),
 		exit: make(chan bool),
 		wo: registry.WatchOptions{
-			Domain: registry.WildcardDomain,
+			Domain: registry.GlobalDomain,
 		},
 	}
 

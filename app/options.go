@@ -15,7 +15,7 @@ type Options struct {
 	Broker   event.Broker
 	Client   client.Client
 	Server   server.Server
-	Registry registry.Registry
+	Registry registry.Table
 
 	// Before and After funcs
 	BeforeStart []func() error
@@ -63,7 +63,7 @@ func Server(s server.Server) Option {
 
 // Registry sets the registry for the app
 // and the underlying components
-func Registry(r registry.Registry) Option {
+func Registry(r registry.Table) Option {
 	return func(o *Options) {
 		o.Registry = r
 		// Update server
