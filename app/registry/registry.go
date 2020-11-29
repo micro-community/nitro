@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	// WildcardDomain indicates any domain
-	WildcardDomain = "*"
+	// GlobalDomain indicates any domain
+	GlobalDomain = "*"
 	// DefaultDomain to use if none was provided in options
 	DefaultDomain = "nitro"
 )

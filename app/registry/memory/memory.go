@@ -339,7 +339,7 @@ func (m *Table) Get(name string, opts ...registry.GetOption) ([]*registry.App, e
 	}
 
 	// if it's a wildcard domain, return from all domains
-	if options.Domain == registry.WildcardDomain {
+	if options.Domain == registry.GlobalDomain {
 		m.RLock()
 		recs := m.records
 		m.RUnlock()
@@ -401,7 +401,7 @@ func (m *Table) List(opts ...registry.ListOption) ([]*registry.App, error) {
 	}
 
 	// if it's a wildcard domain, list from all domains
-	if options.Domain == registry.WildcardDomain {
+	if options.Domain == registry.GlobalDomain {
 		m.RLock()
 		recs := m.records
 		m.RUnlock()
