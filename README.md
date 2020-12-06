@@ -20,13 +20,13 @@ Nitro focuses on dapps, IoT, edge and p2p.
 
 Features in development:
 
-- Lightweight RPC based communication
-- Event broadcasting and notifications
-- CRDT Data synchronisation and storage
-- Consensus protocol and execution engine
-- WebAssembly target compilation support
-- Unique randomized token generation aka BLS
-- P2P gossip networking stack in userspace
+- [x] Lightweight RPC based communication
+- [x] Event broadcasting and notifications
+- [ ] CRDT Data synchronisation and storage
+- [ ] Consensus protocol and execution engine
+- [ ] WebAssembly target compilation support
+- [ ] Unique randomized token generation aka BLS
+- [ ] P2P gossip networking stack in userspace
 
 ## Future
 
