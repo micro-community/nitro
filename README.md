@@ -16,7 +16,6 @@ Note: Nitro is currently undergoing a complete rewrite and is considered unstabl
 ## Features
 
 Nitro focuses on dapps, IoT, edge and p2p. 
-        "time"
 
 Features in development:
 
